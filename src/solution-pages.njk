@@ -6,29 +6,16 @@ pagination:
   alias: solution
   addAllPagesToCollections: true
 permalink: "/{{ solution.slug }}/index.html"
-eleventyComputed:
-  title: "{{ solution.title }}"
-  metaTitle: "{{ solution.metaTitle }}"
-  metaDesc: "{{ solution.metaDesc }}"
-  heroImage: "{{ solution.hero }}"
-  heroAlt: "{{ solution.heroAlt }}"
-  heroTitle: "{{ solution.title }}"
-  strapline: "{{ solution.strapline }}"
-  ogImage: "{{ solution.hero }}"
-  breadcrumbs:
-    - label: "Home"
-      url: "/"
-    - label: "Solutions"
-      url: "/solutions"
-    - label: "{{ solution.navLabel }}"
 ---
 {% include "components/hero.njk" %}
 
 <section class="section">
-  <div class="container flow measure">
-    {%- for para in solution.intro %}
-    <p class="lead-first">{{ para }}</p>
-    {%- endfor %}
+  <div class="container">
+    <div class="flow measure">
+      {%- for para in solution.intro %}
+      <p class="lead-first">{{ para }}</p>
+      {%- endfor %}
+    </div>
   </div>
 </section>
 

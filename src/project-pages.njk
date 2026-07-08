@@ -6,20 +6,6 @@ pagination:
   alias: project
   addAllPagesToCollections: true
 permalink: "/{{ project.slug }}/index.html"
-eleventyComputed:
-  title: "{{ project.title }}"
-  metaTitle: "{{ project.metaTitle }}"
-  metaDesc: "{{ project.metaDesc }}"
-  heroImage: "{{ project.hero }}"
-  heroAlt: "{{ project.heroAlt }}"
-  heroTitle: "{{ project.title }}"
-  ogImage: "{{ project.hero }}"
-  breadcrumbs:
-    - label: "Home"
-      url: "/"
-    - label: "Our Work"
-      url: "/our-work"
-    - label: "{{ project.title }}"
 ---
 {% include "components/hero.njk" %}
 
