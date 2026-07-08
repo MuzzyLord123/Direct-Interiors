@@ -1,0 +1,98 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: solutions
+  size: 1
+  alias: solution
+  addAllPagesToCollections: true
+permalink: "/{{ solution.slug }}/index.html"
+eleventyComputed:
+  title: "{{ solution.title }}"
+  metaTitle: "{{ solution.metaTitle }}"
+  metaDesc: "{{ solution.metaDesc }}"
+  heroImage: "{{ solution.hero }}"
+  heroAlt: "{{ solution.heroAlt }}"
+  heroTitle: "{{ solution.title }}"
+  strapline: "{{ solution.strapline }}"
+  ogImage: "{{ solution.hero }}"
+  breadcrumbs:
+    - label: "Home"
+      url: "/"
+    - label: "Solutions"
+      url: "/solutions"
+    - label: "{{ solution.navLabel }}"
+---
+{% include "components/hero.njk" %}
+
+<section class="section">
+  <div class="container flow measure">
+    {%- for para in solution.intro %}
+    <p class="lead-first">{{ para }}</p>
+    {%- endfor %}
+  </div>
+</section>
+
+{%- if solution.checklist %}
+<section class="section section--tint">
+  <div class="container">
+    {% set checklistData = solution.checklist %}
+    {% include "components/checklist.njk" %}
+    {%- if solution.checklist2 %}
+    {% set checklistData = solution.checklist2 %}
+    {% include "components/checklist.njk" %}
+    {%- endif %}
+  </div>
+</section>
+{%- endif %}
+
+{%- if solution.note %}
+<section class="section section--slim">
+  <div class="container">
+    <aside class="note-panel">
+      <h2 class="note-panel__title">{{ solution.note.title }}</h2>
+      <p>{{ solution.note.text }}</p>
+    </aside>
+  </div>
+</section>
+{%- endif %}
+
+{%- if solution.body or solution.sideImages %}
+<section class="section">
+  <div class="container split">
+    <div class="flow measure">
+      {%- for para in solution.body %}
+      <p>{{ para }}</p>
+      {%- endfor %}
+      {%- if solution.systems %}
+      <div class="systems-strip">
+        <h2 class="systems-strip__title">Systems we install</h2>
+        <ul class="systems-strip__list">
+          {%- for name in solution.systems %}
+          <li>{{ name }}</li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- endif %}
+      {% include "components/contact-strip.njk" %}
+    </div>
+    {%- if solution.sideImages %}
+    <div class="split__media">
+      {%- for img in solution.sideImages %}
+      {% image img.src, img.alt, { widths: [400, 800], sizes: "(min-width: 900px) 40vw, 100vw", class: "split__img" } %}
+      {%- endfor %}
+    </div>
+    {%- endif %}
+  </div>
+</section>
+{%- endif %}
+
+{% set testimonialId = solution.testimonial %}
+{% include "components/testimonial.njk" %}
+
+{% include "components/cta-band.njk" %}
+
+{% set relatedSlugs = solution.related %}
+{% include "components/related-projects.njk" %}
+
+{% set currentSlug = solution.slug %}
+{% include "components/other-solutions.njk" %}

@@ -1,0 +1,13 @@
+{# Text links to the other solutions — internal linking block on solution pages. #}
+<section class="other-solutions" aria-labelledby="other-solutions-heading">
+  <div class="container">
+    <h2 id="other-solutions-heading" class="other-solutions__title">Other solutions</h2>
+    <ul class="other-solutions__list">
+      {%- for s in solutions %}
+      {%- if s.slug != currentSlug %}
+      <li><a href="/{{ s.slug }}">{{ s.navLabel }}</a></li>
+      {%- endif %}
+      {%- endfor %}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,120 @@
+---
+layout: layouts/base.njk
+permalink: /index.html
+title: Home
+metaTitle: "Commercial Fit-Outs & Refurbishments, Chester & North West | Direct Interiors"
+metaDesc: "Family-run commercial fit-out and refurbishment specialists covering Chester, Deeside, North Wales and the North West. All trades in-house — get a free quote today."
+heroImage: "slider01.jpg"
+heroAlt: "Completed commercial interior fit-out by Direct Interiors"
+ogImage: "slider01.jpg"
+---
+<section class="hero hero--tall">
+  {% image heroImage, heroAlt, { widths: [480, 800, 1200, 1920], sizes: "100vw", eager: true, fetchpriority: "high", class: "hero__img" } %}
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="container hero__content">
+    <h1 class="hero__title">Commercial fit-outs and refurbishments across Chester, North Wales and the North West</h1>
+    <p class="hero__lead">Direct Interiors is a business of trust, knowledge and experience — Est. {{ site.estYear }}.</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="/contact-us?enquiry=quote">Get a free quote</a>
+      <a class="btn btn--ghost" href="/our-work">View our work</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-heading">
+  <div class="container">
+    <h2 id="services-heading">What we do</h2>
+    {% include "components/solutions-grid.njk" %}
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="vision-heading">
+  <div class="container flow measure">
+    <h2 id="vision-heading">Let’s make your vision, a reality</h2>
+    <p>Direct Interiors North West Limited are one of the most trusted fit-out companies and refurbishment specialists for many of the leading commercial &amp; public sectors across the UK. We have a small ‘family like’, energetic team, who endeavour to take the time to listen to your individual requirements and work with you to create a balanced, but productive space.</p>
+    <p>We amplify your optimism, increase productivity, and add value to your premises whilst providing value well beyond the obvious aesthetic benefits. No matter how big or small the job, we manage everything so that you can carry on with business as usual.</p>
+    <p class="trusted-by">Trusted by the Welsh Government, Demon Tweeks, AURA Leisure and Libraries and Bell Meadow Business Park.</p>
+    <p><a class="btn btn--primary" href="/contact-us?enquiry=quote">Contact us for a free, no-obligation quote</a></p>
+  </div>
+</section>
+
+{% set testimonialId = "jones" %}
+{% include "components/testimonial.njk" %}
+
+{% include "components/cta-band.njk" %}
+
+<section class="section" aria-labelledby="why-heading">
+  <div class="container split">
+    <div class="flow measure">
+      <h2 id="why-heading">Why Direct Interiors?</h2>
+      <p>At Direct Interiors North West Limited, we know the value of trust. We pride ourselves on service, reliability and high-end quality finishes — we employ a multitude of trades to take care of every aspect of the job, all under one roof!</p>
+      <p>Direct Interiors have the powers to truly transform an environment, an opportunity to embrace modern trends and introduce more diverse working facilities to enhance your production, workplace and aesthetics. A Project Manager will be your single point of contact to handle every detail and ensure that your project is delivered on time and within budget.</p>
+      <p>The demands of commercial interior design have evolved radically and as a result, office fit-out services, commercial refurbishments, bespoke projects and approaches to layouts have had to adapt and modernise. We stay at the forefront of this.</p>
+    </div>
+    <div class="flow">
+      <h3 class="services-list__title">Our services:</h3>
+      <ul class="services-list">
+        <li><a href="/interior-fit-outs-and-refurbishments">Commercial Fit-Outs &amp; Refurbishments</a> — Replace, Renovate, Create</li>
+        <li><a href="/suspended-ceilings">Suspended Ceilings &amp; Lighting</a> — Innovative designs fit for purpose</li>
+        <li><a href="/partition-walls-drylining">Partition Walls &amp; Drylining</a> — Create rooms, transform areas &amp; workspaces</li>
+        <li><a href="/glass-partitions">Glass Partitioning</a> — Bespoke for you, natural light allowance, modern, stylish</li>
+        <li><a href="/hygienic-wall-cladding">Hygienic Wall Cladding</a> — Washable &amp; wipeable, FDA approved, meets building regulations &amp; health safety standards</li>
+        <li><a href="/washroom-refurbishments">Washroom Refurbishments</a> — Solid grade laminates &amp; solid surfaces, functional environments, DDA compliant</li>
+        <li><a href="/bespoke-designs">Bespoke Designs</a> — Visionary designs brought to life</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="sectors-heading">
+  <div class="container">
+    <h2 id="sectors-heading">Sectors we work in</h2>
+    <ul class="sector-grid">
+      {%- for sector in sectors %}
+      <li class="sector-tile">
+        {% image sector.image, sector.alt, { widths: [400, 800], sizes: "(min-width: 1024px) 25vw, 50vw", class: "sector-tile__img" } %}
+        <p class="sector-tile__label">{{ sector.title }}</p>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="brand-statement" aria-label="Brand statement">
+  <div class="container">
+    <p class="brand-statement__title">Replace &ndash; Renovate &ndash; Create</p>
+    <p class="brand-statement__quote">“Vision is a picture of the future that produces passion”</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="shop-heading">
+  <div class="container">
+    <h2 id="shop-heading">Shop online</h2>
+    <p class="measure">Products are supplied through our sister company <a href="{{ site.ceilingsDirect.url }}" rel="noopener" target="_blank">Ceilings Direct</a> — everything below is available to buy online.</p>
+    <div class="card-grid card-grid--3">
+      {%- for product in products %}
+      <article class="card">
+        <div class="card__media">
+          {% image product.image, product.alt, { widths: [400, 800], sizes: "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" } %}
+        </div>
+        <div class="card__body">
+          <h3 class="card__title"><a class="card__link" href="{{ site.ceilingsDirect.store }}" rel="noopener" target="_blank">{{ product.title }}</a></h3>
+          <p class="card__blurb">{{ product.blurb }}</p>
+          <p class="card__more" aria-hidden="true">Shop now <span>&rarr;</span></p>
+        </div>
+      </article>
+      {%- endfor %}
+    </div>
+    <p class="section__footer-action"><a class="btn btn--secondary" href="{{ site.ceilingsDirect.store }}" rel="noopener" target="_blank">Shop at Ceilings Direct &rarr;</a></p>
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="contact-heading">
+  <div class="container flow measure">
+    <h2 id="contact-heading">Contact</h2>
+    <p>Call us now — <a href="{{ site.phoneHref }}">{{ site.phoneDisplay }}</a><br>
+    Email us on: <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
+    Visit our offices: {{ site.addressFull }}</p>
+    <p><a class="btn btn--primary" href="/contact-us">Get in touch</a></p>
+  </div>
+</section>

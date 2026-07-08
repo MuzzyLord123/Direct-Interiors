@@ -1,0 +1,46 @@
+---
+layout: layouts/base.njk
+permalink: /sub-services/index.html
+title: Sub Services
+metaTitle: "Supporting Trades In-House, Chester | Direct Interiors"
+metaDesc: "Joinery, electrical, plumbing, flooring and more — every supporting trade employed in-house, CSCS-carded and managed by a single point of contact across the North West."
+heroImage: "sub-services-hero-64d135dd.jpg"
+heroAlt: "Direct Interiors tradesperson at work on site"
+ogImage: "sub-services-hero-64d135dd.jpg"
+breadcrumbs:
+  - label: "Home"
+    url: "/"
+  - label: "Sub Services"
+---
+{# TODO(client) #10: on-page H1 renamed from "Sub Services" (internal jargon) —
+   URL and nav label unchanged pending client approval. #}
+{% set heroTitle = "Supporting Trades — All In-House" %}
+{% include "components/hero.njk" %}
+
+<section class="section">
+  <div class="container flow measure">
+    <p class="lead-first">Direct Interiors employ all trades in-house — this enables us to offer sub services which could benefit you.</p>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    {% set checklistData = {
+      title: "Trades we employ:",
+      items: ["Joinery", "Electrical", "Plumbing", "Lighting", "Tape & Jointing", "Insulation", "Fire Protection", "Commercial Kitchens", "Flooring", "Maintenance", "Dilapidations"]
+    } %}
+    {% include "components/checklist.njk" %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container flow measure">
+    <p>All the above listed are the ‘behind the scenes’ skills we offer through our current work staff. Our single point of contact service will manage everything from start to finish.</p>
+    <p>All employees hold CSCS cards and trade qualifications. Each employee has a different skill set and has accumulated a vast amount of experience over the years. All employed members of Direct Interiors North West Limited are competent and professional when sent to site to carry out a specific task. As a result of this, we can offer a broadened, extensive skill set.</p>
+  </div>
+</section>
+
+{% set testimonialId = "jones" %}
+{% include "components/testimonial.njk" %}
+
+{% include "components/cta-band.njk" %}

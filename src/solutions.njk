@@ -1,0 +1,31 @@
+---
+layout: layouts/base.njk
+permalink: /solutions/index.html
+title: Solutions
+metaTitle: "Commercial Interior Solutions, Chester & North Wales | Direct Interiors"
+metaDesc: "Fit-outs, suspended ceilings, partitions, glass partitions, hygienic cladding, washrooms and bespoke designs — all delivered in-house across the North West."
+heroImage: "slider03a.jpg"
+heroAlt: "Commercial interior showing several Direct Interiors solutions"
+ogImage: "slider03a.jpg"
+breadcrumbs:
+  - label: "Home"
+    url: "/"
+  - label: "Solutions"
+---
+{% set heroTitle = "Our solutions" %}
+{% include "components/hero.njk" %}
+
+<section class="section">
+  <div class="container">
+    <div class="flow measure">
+      <p class="lead-first">Whatever your space needs — a complete fit-out, a new ceiling, or a single partition wall — we design and install it with our own trades, under one roof. Every solution below is delivered across Chester, Deeside, North Wales and the North West.</p>
+    </div>
+    <div class="section__spacer"></div>
+    {% include "components/solutions-grid.njk" %}
+  </div>
+</section>
+
+{% set testimonialId = "kinnerton-long" %}
+{% include "components/testimonial.njk" %}
+
+{% include "components/cta-band.njk" %}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ metaTitle or title }}</title>
+  <meta name="description" content="{{ metaDesc }}">
+  <link rel="canonical" href="{{ page.url | canonical(site.url) }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.shortName }}">
+  <meta property="og:title" content="{{ metaTitle or title }}">
+  <meta property="og:description" content="{{ metaDesc }}">
+  <meta property="og:url" content="{{ page.url | canonical(site.url) }}">
+  {%- if ogImage %}
+  {%- set ogImageUrl %}{% imageUrl ogImage, 1200 %}{% endset %}
+  <meta property="og:image" content="{{ site.url }}{{ ogImageUrl }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ site.url }}{{ ogImageUrl }}">
+  {%- else %}
+  <meta name="twitter:card" content="summary">
+  {%- endif %}
+  <meta name="twitter:title" content="{{ metaTitle or title }}">
+  <meta name="twitter:description" content="{{ metaDesc }}">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
+  {%- if heroImage %}
+  {% heroPreload heroImage %}
+  {%- endif %}
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "{{ site.url }}/#business",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}",
+    "telephone": "+441244810222",
+    "email": "{{ site.email }}",
+    "foundingDate": "{{ site.estYear }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ site.address.street }}",
+      "addressLocality": "{{ site.address.locality }}, {{ site.address.town }}",
+      "addressRegion": "{{ site.address.county }}",
+      "postalCode": "{{ site.address.postcode }}",
+      "addressCountry": "GB"
+    },
+    "areaServed": ["Chester", "Deeside", "North Wales", "North West England"]
+  }
+  </script>
+  {%- if breadcrumbs %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {%- for crumb in breadcrumbs %}
+      {
+        "@type": "ListItem",
+        "position": {{ loop.index }},
+        "name": "{{ crumb.label }}"{% if crumb.url %},
+        "item": "{{ crumb.url | canonical(site.url) }}"{% endif %}
+      }{% if not loop.last %},{% endif %}
+      {%- endfor %}
+    ]
+  }
+  </script>
+  {%- endif %}
+</head>
+<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include "components/header.njk" %}
+  <main id="main">
+    {{ content | safe }}
+  </main>
+  {% include "components/footer.njk" %}
+  {%- if site.gaId %}
+  <div class="consent-banner" id="consent-banner" hidden>
+    <p>We use Google Analytics cookies to understand how the site is used. See our <a href="/cookies-policy">cookies policy</a>.</p>
+    <div class="consent-banner__actions">
+      <button type="button" class="btn btn--primary" data-consent="accept">Accept analytics cookies</button>
+      <button type="button" class="btn btn--secondary" data-consent="decline">Decline</button>
+    </div>
+  </div>
+  {%- endif %}
+  <script src="/assets/js/main.js" defer data-ga-id="{{ site.gaId }}"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{# Usage: {% set relatedSlugs = solution.related %}{% include %} — proof section on solution pages. #}
+{%- if relatedSlugs and relatedSlugs.length %}
+<section class="related" aria-labelledby="related-projects-heading">
+  <div class="container">
+    <h2 id="related-projects-heading">See it in our work</h2>
+    <div class="card-grid card-grid--3">
+      {%- for slug in relatedSlugs %}
+      {%- for p in projects %}
+      {%- if p.slug == slug %}
+      <article class="card">
+        <div class="card__media">
+          {% image p.thumb, p.thumbAlt, { widths: [400, 800], sizes: "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" } %}
+        </div>
+        <div class="card__body">
+          <h3 class="card__title"><a class="card__link" href="/{{ p.slug }}">{{ p.title }}</a></h3>
+          <p class="card__blurb">{{ p.summary }}</p>
+          <p class="card__more" aria-hidden="true">View project <span>&rarr;</span></p>
+        </div>
+      </article>
+      {%- endif %}
+      {%- endfor %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}

@@ -1,0 +1,57 @@
+---
+layout: layouts/base.njk
+permalink: /our-work/index.html
+title: Our Work
+metaTitle: "Our Work — Fit-Out & Refurbishment Projects | Direct Interiors"
+metaDesc: "Recent commercial fit-out and refurbishment projects across Chester, Wrexham, Liverpool and North Wales — from the Welsh Government to a village butcher’s shop."
+heroImage: "slider02a.jpg"
+heroAlt: "Completed commercial fit-out project interior"
+ogImage: "slider02a.jpg"
+breadcrumbs:
+  - label: "Home"
+    url: "/"
+  - label: "Our Work"
+---
+{% set heroTitle = "Our Work" %}
+{% include "components/hero.njk" %}
+
+<section class="section">
+  <div class="container">
+    <div class="flow measure">
+      <p class="lead-first">Every project here was delivered by our own team — no job too small, none too large. From the Welsh Government’s offices to a village butcher’s shop, take a look at what we’ve built for our clients across Chester, North Wales and the North West.</p>
+    </div>
+    <div class="work-filters" data-work-filters hidden>
+      <p class="work-filters__label" id="work-filters-label">Filter by service:</p>
+      <div class="work-filters__chips" role="group" aria-labelledby="work-filters-label">
+        <button type="button" class="work-filters__chip is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="work-filters__chip" data-filter="Fit-Out" aria-pressed="false">Fit-Out</button>
+        <button type="button" class="work-filters__chip" data-filter="Glass Partitions" aria-pressed="false">Glass Partitions</button>
+        <button type="button" class="work-filters__chip" data-filter="Suspended Ceilings" aria-pressed="false">Suspended Ceilings</button>
+        <button type="button" class="work-filters__chip" data-filter="Washrooms" aria-pressed="false">Washrooms</button>
+        <button type="button" class="work-filters__chip" data-filter="Hygienic Cladding" aria-pressed="false">Hygienic Cladding</button>
+      </div>
+    </div>
+    <div class="section__spacer"></div>
+    <div class="card-grid card-grid--3" data-work-grid>
+      {%- for p in projects %}
+      <article class="card" data-services="{{ p.services | join('|') }}">
+        <div class="card__media">
+          {% image p.thumb, p.thumbAlt, { widths: [400, 800], sizes: "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" } %}
+        </div>
+        <div class="card__body">
+          <h2 class="card__title card__title--small"><a class="card__link" href="/{{ p.slug }}">{{ p.title }}</a></h2>
+          <p class="card__blurb">{{ p.summary }}</p>
+          <ul class="card__tags" aria-label="Services delivered">
+            {%- for tag in p.services %}
+            <li>{{ tag }}</li>
+            {%- endfor %}
+          </ul>
+          <p class="card__more" aria-hidden="true">View project <span>&rarr;</span></p>
+        </div>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+{% include "components/cta-band.njk" %}

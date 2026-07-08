@@ -1,0 +1,23 @@
+---
+pagination:
+  data: redirects
+  size: 1
+  alias: redirect
+permalink: "{{ redirect.from }}/index.html"
+eleventyExcludeFromCollections: true
+---
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting…</title>
+  {# Fallback for hosts without server-side redirects. On Netlify (or any host
+     honouring _redirects) the platform 301 takes precedence over this file. #}
+  <meta http-equiv="refresh" content="0; url={{ redirect.to }}">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="{{ site.url }}{{ redirect.to | replace(r/\?.*$/, "") }}">
+</head>
+<body>
+  <p>This page has moved. Continue to <a href="{{ redirect.to }}">{{ site.url }}{{ redirect.to }}</a>.</p>
+</body>
+</html>

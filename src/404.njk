@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+permalink: /404.html
+title: Page not found
+metaTitle: "Page Not Found | Direct Interiors"
+metaDesc: "Sorry, we can’t find that page. Head back to the Direct Interiors homepage or browse our solutions and recent work."
+eleventyExcludeFromCollections: true
+---
+<section class="section">
+  <div class="container flow measure not-found">
+    <h1>Page not found</h1>
+    <p>Sorry — we can’t find the page you’re looking for. It may have moved when we tidied the site up.</p>
+    <p>Try one of these instead:</p>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/solutions">Our solutions</a></li>
+      <li><a href="/our-work">Our work</a></li>
+      <li><a href="/contact-us">Contact us</a></li>
+    </ul>
+    <p>Or call us on <a href="{{ site.phoneHref }}">{{ site.phoneDisplay }}</a> — we’ll point you in the right direction.</p>
+  </div>
+</section>

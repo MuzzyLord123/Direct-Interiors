@@ -1,0 +1,64 @@
+---
+layout: layouts/base.njk
+permalink: /about-us/index.html
+title: About Us
+metaTitle: "About Us — Family-Run Fit-Out Specialists | Direct Interiors"
+metaDesc: "Established over 20 years in Chester and North Wales, Direct Interiors (formerly Ceilings Direct) design and install commercial interiors across the North West and UK."
+heroImage: "about-us-hero.jpg"
+heroAlt: "The Direct Interiors team at work on a commercial interior"
+ogImage: "about-us-hero.jpg"
+breadcrumbs:
+  - label: "Home"
+    url: "/"
+  - label: "About Us"
+---
+{% set heroTitle = "About Us" %}
+{% include "components/hero.njk" %}
+
+<section class="section">
+  <div class="container split">
+    <div class="flow measure">
+      <p class="lead-first">Direct Interiors North West Limited, established in {{ site.estYear }} and based in Chester and North Wales, are specialists in the design and installation of industrial and commercial interiors throughout the North West and UK.</p>
+      <p>Formerly known as <strong>Ceilings Direct North West Limited</strong> before a change of company name in February 2021 — the change of name was prompted by the increasing growth of our company and its expansion of trades within our team.</p>
+      <p>Our design and installation teams are renowned for their professionalism, project focus and performance reliability. We’re proud of the reputation we’ve built over two decades.</p>
+      <p>In an industry where efficiency is key, Direct Interiors offer experience, technical expertise, product intelligence and know-how within the field of commercial interior fit-outs and refurbishments.</p>
+      <p>We have a track record of success and a diverse portfolio of completed interior fitting-out projects for offices, industrial premises and prestige residential projects.</p>
+      <div class="about-actions">
+        <a class="btn btn--primary" href="/our-work">View our work</a>
+        <a class="btn btn--secondary" href="/contact-us">Contact us</a>
+      </div>
+    </div>
+    <div class="split__media">
+      {% image "about-us-side01.jpg", "Completed commercial interior by Direct Interiors", { widths: [400, 800], sizes: "(min-width: 900px) 40vw, 100vw", class: "split__img" } %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" aria-label="Company facts">
+  <div class="container">
+    <ul class="stat-strip">
+      <li class="stat-strip__item">
+        <span class="stat-strip__value">{{ buildYear - site.estYear }}+</span>
+        <span class="stat-strip__label">Years trading</span>
+      </li>
+      <li class="stat-strip__item">
+        <span class="stat-strip__value">11</span>
+        <span class="stat-strip__label">Trades in-house</span>
+      </li>
+      <li class="stat-strip__item">
+        <span class="stat-strip__value">8</span>
+        <span class="stat-strip__label">Sectors served</span>
+      </li>
+      <li class="stat-strip__item">
+        <span class="stat-strip__value">CSCS</span>
+        <span class="stat-strip__label">Carded team</span>
+      </li>
+    </ul>
+    {# TODO(client) #4: add CHAS / SafeContractor / Constructionline logos here once confirmed. #}
+  </div>
+</section>
+
+{% set testimonialId = "kinnerton-short" %}
+{% include "components/testimonial.njk" %}
+
+{% include "components/cta-band.njk" %}

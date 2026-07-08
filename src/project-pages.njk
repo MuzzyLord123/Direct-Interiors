@@ -1,0 +1,125 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: projects
+  size: 1
+  alias: project
+  addAllPagesToCollections: true
+permalink: "/{{ project.slug }}/index.html"
+eleventyComputed:
+  title: "{{ project.title }}"
+  metaTitle: "{{ project.metaTitle }}"
+  metaDesc: "{{ project.metaDesc }}"
+  heroImage: "{{ project.hero }}"
+  heroAlt: "{{ project.heroAlt }}"
+  heroTitle: "{{ project.title }}"
+  ogImage: "{{ project.hero }}"
+  breadcrumbs:
+    - label: "Home"
+      url: "/"
+    - label: "Our Work"
+      url: "/our-work"
+    - label: "{{ project.title }}"
+---
+{% include "components/hero.njk" %}
+
+<section class="section">
+  <div class="container project-layout">
+    <div class="project-layout__main flow measure">
+      <div class="project-actions">
+        <a class="btn btn--primary" href="/contact-us?enquiry=consultation">Discuss a similar project</a>
+      </div>
+      {%- for para in project.intro %}
+      <p class="lead-first">{{ para }}</p>
+      {%- endfor %}
+      {%- if project.installed %}
+      {% set checklistData = project.installed %}
+      {% include "components/checklist.njk" %}
+      {%- endif %}
+      {%- for para in project.outro %}
+      <p>{{ para }}</p>
+      {%- endfor %}
+      {%- if project.quote %}
+      {%- set q = testimonials[project.quote] %}
+      <figure class="project-quote">
+        <blockquote><p>“{{ q.quote }}”</p></blockquote>
+        <figcaption><cite>{{ q.cite }}</cite></figcaption>
+      </figure>
+      {%- endif %}
+      {%- if project.duration %}
+      <p><strong>Project completion time:</strong> {{ project.duration }}.</p>
+      {%- endif %}
+      {%- for para in project.afterQuote %}
+      <p>{{ para }}</p>
+      {%- endfor %}
+    </div>
+    <aside class="project-layout__aside">
+      <div class="project-meta">
+        <h2 class="project-meta__title">Project details</h2>
+        <dl class="project-meta__list">
+          {%- if project.location %}
+          <dt>Location</dt><dd>{{ project.location }}</dd>
+          {%- endif %}
+          {%- if project.sector %}
+          <dt>Sector</dt><dd>{{ project.sector }}</dd>
+          {%- endif %}
+          {%- if project.services %}
+          <dt>Services</dt><dd>{{ project.services | join(", ") }}</dd>
+          {%- endif %}
+          {%- if project.duration %}
+          <dt>Duration</dt><dd>{{ project.duration }}</dd>
+          {%- endif %}
+        </dl>
+      </div>
+      {% image project.side, project.sideAlt, { widths: [400, 800], sizes: "(min-width: 900px) 33vw, 100vw", class: "project-layout__side-img" } %}
+    </aside>
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="project-gallery-heading">
+  <div class="container">
+    <h2 id="project-gallery-heading">Project gallery</h2>
+    <ul class="gallery" data-lightbox>
+      {%- for img in project.gallery %}
+      <li class="gallery__item">
+        <a class="gallery__link" href="{% imageUrl img.src, 1200 %}">
+          {% image img.src, img.alt, { widths: [400, 800], sizes: "(min-width: 1024px) 25vw, 50vw", class: "gallery__img" } %}
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+{%- if project.relatedSolutions and project.relatedSolutions.length %}
+<section class="section" aria-labelledby="related-solutions-heading">
+  <div class="container">
+    <h2 id="related-solutions-heading">Related solutions</h2>
+    <ul class="related-solutions__list">
+      {%- for slug in project.relatedSolutions %}
+      {%- for s in solutions %}
+      {%- if s.slug == slug %}
+      <li><a href="/{{ s.slug }}">{{ s.navLabel }}</a></li>
+      {%- endif %}
+      {%- endfor %}
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+{%- endif %}
+
+<nav class="project-pager" aria-label="More projects">
+  <div class="container project-pager__inner">
+    <a class="project-pager__link project-pager__link--prev" href="/{{ project.prev.slug }}">
+      <span class="project-pager__dir" aria-hidden="true">&larr; Previous project</span>
+      <span class="project-pager__name">{{ project.prev.title }}</span>
+    </a>
+    <a class="project-pager__link project-pager__link--all" href="/our-work">All projects</a>
+    <a class="project-pager__link project-pager__link--next" href="/{{ project.next.slug }}">
+      <span class="project-pager__dir" aria-hidden="true">Next project &rarr;</span>
+      <span class="project-pager__name">{{ project.next.title }}</span>
+    </a>
+  </div>
+</nav>
+
+{% include "components/cta-band.njk" %}

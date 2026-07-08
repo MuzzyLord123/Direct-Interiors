@@ -1,0 +1,24 @@
+{# Static photographic hero. Set via page vars: heroImage, heroAlt, heroTitle,
+   heroLead (optional), heroCtas (bool, home only), heroSize ("tall" home / default interior) #}
+<section class="hero{% if heroSize == "tall" %} hero--tall{% endif %}">
+  {% image heroImage, heroAlt or "", { widths: [480, 800, 1200, 1920], sizes: "100vw", eager: true, fetchpriority: "high", class: "hero__img" } %}
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="container hero__content">
+    {%- if breadcrumbs %}
+    {% include "components/breadcrumbs.njk" %}
+    {%- endif %}
+    <h1 class="hero__title">{{ heroTitle or title }}</h1>
+    {%- if strapline %}
+    <p class="hero__strapline">{{ strapline }}</p>
+    {%- endif %}
+    {%- if heroLead %}
+    <p class="hero__lead">{{ heroLead }}</p>
+    {%- endif %}
+    {%- if heroCtas %}
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="/contact-us?enquiry=quote">Get a free quote</a>
+      <a class="btn btn--ghost" href="/our-work">View our work</a>
+    </div>
+    {%- endif %}
+  </div>
+</section>
