@@ -4,7 +4,8 @@
   "private": true,
   "description": "Direct Interiors North West — static site (Eleventy). Premium refresh of directinteriorsnw.com preserving the existing brand, copy and photography.",
   "scripts": {
-    "build": "eleventy",
+    "build": "eleventy && npm run minify",
+    "minify": "esbuild \"_site/assets/css/*.css\" --minify --allow-overwrite --outdir=_site/assets/css && esbuild _site/assets/js/main.js --minify --allow-overwrite --outdir=_site/assets/js",
     "dev": "eleventy --serve",
     "check:placeholders": "bash scripts/check-placeholders.sh _site",
     "check:links": "node scripts/check-links.mjs _site",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-img": "^6.0.4",
+    "esbuild": "^0.28.1",
     "playwright": "^1.61.1"
   }
 }

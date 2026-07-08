@@ -48,6 +48,9 @@ improvements applied. All photography and genuine copy were crawled from the liv
   (Before: `#3bb5e6` / After: `#1978a5` — this is the only adjusted colour on the site.)
 - Charcoal `#595959` with white text = 7.00:1 ✓ (footer). Body `#333` = 12.63:1 ✓,
   muted `#666` = 5.74:1 ✓. Hero/photo text always sits on a dark scrim.
+- Second derived token `--color-accent-on-dark: #9cdcf4` — brand blue lightened for
+  small text on the charcoal footer/brand-statement (`#3bb5e6` on `#595959` = 2.98:1
+  ✗ → `#9cdcf4` = 4.66:1 ✓). Used only on dark surfaces.
 
 ---
 
@@ -182,11 +185,34 @@ Copy fixes per brief §6.3 (Butchers, Matthew Arnold, AURA quote).
 4. **Low** — filter chips, entry animations (reduced-motion-gated), testimonial variety, footer
    extras.
 
-## Acceptance verification (results recorded at bottom of this file after build)
-- [ ] `scripts/check-placeholders.sh` passes on built output
-- [ ] Zero broken/`#`/empty-href internal links; every `<img>` has src/dimensions/alt
-- [ ] Legacy URLs 301 (platform config) + stub fallbacks; no 404s
-- [ ] One `<h1>` per page; sane outline on Home / Suspended Ceilings / Demon Tweeks / Contact
-- [ ] Keyboard walkthrough: nav → solution → project → contact form
-- [ ] Lighthouse ≥90 ×4 on the four sample pages (mobile)
-- [ ] Before/after screenshots at 375px & 1440px in `/screenshots`
+## Acceptance verification — results (2026-07-08)
+
+- [x] `scripts/check-placeholders.sh` passes on the full built output
+      (`check-placeholders: OK — no template placeholder strings in _site`).
+- [x] `scripts/check-links.mjs`: **33 pages, zero broken/`#`/empty-href links; every
+      `<img>` has src, width/height and alt; exactly one `<h1>` per page.**
+- [x] Legacy URLs: `_redirects` (301, forced) + per-URL `noindex` meta-refresh stub
+      fallbacks with canonicals; custom 404 page built. No orphaned URLs.
+- [x] Keyboard/interaction walkthrough (`scripts/walkthrough.mjs`): **26/26 PASS** —
+      skip link, dropdown disclosure (Enter/Escape), solution → related project →
+      lightbox (arrows/Escape), consultation CTA regression check, `?enquiry=`
+      pre-selection, inline validation + `role="status"` announcement, work filters,
+      mobile menu (aria-expanded, Escape returns focus), no horizontal scroll at
+      320px/375px.
+- [x] Lighthouse (mobile emulation, headless Chromium 149):
+      | Page | Perf | A11y | Best-Practices | SEO |
+      |------|------|------|----------------|-----|
+      | Home | 98 | 100 | 100 | 100 |
+      | Suspended Ceilings | 99 | 100 | 100 | 100 |
+      | Demon Tweeks | 99 | 100 | 100 | 100 |
+      | Contact | 99 | 100 | 100 | 100 |
+- [x] Before/after screenshots at 375px & 1440px for Home, Suspended Ceilings,
+      Demon Tweeks and Contact committed to `/screenshots` (`before-*` = live Duda
+      site, `after-*` = rebuild).
+- Assets: CSS 23KB + JS 6.5KB minified (pre-gzip) — well inside the 75KB JS budget.
+
+### Same-brand note
+The live site's header is a dark charcoal band with the combined logo; the rebuild
+keeps exactly that (the logo PNG's own `#595959` background blends into the header),
+with the same white nav, brand-blue accents and photography-led heroes. The returning-
+visitor reaction should be "sharper", not "new website".

@@ -8,6 +8,7 @@
   /* Colour — brand */
   --color-accent: #3bb5e6;          /* brand blue: decorative, borders, large display on dark */
   --color-accent-strong: #1978a5;   /* AA-safe blue: buttons, CTA band, text links */
+  --color-accent-on-dark: #9cdcf4;  /* AA-safe blue for small text on charcoal (4.66:1) */
   --color-charcoal: #595959;        /* logo background */
   --color-ink: #333333;             /* body text */
   --color-muted: #666666;           /* secondary text */
