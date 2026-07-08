@@ -1,0 +1,39 @@
+# Netlify-style redirects. 301s for legacy Duda URLs → canonical routes, then a
+# SPA fallback so client-side routes resolve. Prerendered per-route HTML files
+# take precedence over the fallback. Translate to your host's format if not Netlify.
+
+# Consolidated enquiry pages
+/get-a-quote                     /contact?enquiry=quote           301
+/no-obligation-consultation      /contact?enquiry=consultation    301
+/tenders                         /contact?enquiry=tender          301
+/how-can-we-help                 /contact                         301
+/sub-services                    /all-trades                      301
+
+# Legacy privacy / legal URLs
+/gdpr                            /privacy                         301
+/gdpr---level-1                  /privacy                         301
+/gdpr---level-2                  /privacy                         301
+/privacy-policy                  /privacy                         301
+/terms-and-conditions            /terms                           301
+/cookies-policy                  /cookies                         301
+
+# Old work + leftover Duda template pages (were live + indexed)
+/our-work                        /projects                        301
+/example-case-study-for-copying  /projects                        301
+/servicesbbeea1bd                /solutions                       301
+/about-us                        /why-direct                      301
+
+# Old flat project slugs → nested project routes
+/demon-tweeks-wrexham                      /projects/demon-tweeks-wrexham                      301
+/doc-fictoria-welsh-government             /projects/doc-fictoria-welsh-government             301
+/padeswood-buckley-golf-club               /projects/padeswood-buckley-golf-club               301
+/butchers-dyserth                          /projects/butchers-dyserth                          301
+/matthew-arnold-primary-school-liverpool   /projects/matthew-arnold-primary-school-liverpool   301
+/bell-meadow-business-park-chester         /projects/bell-meadow-business-park-chester         301
+/westrock-wrexham                          /projects/westrock-wrexham                          301
+
+# Brief-mentioned nested solution variant → canonical flat slug
+/solutions/interior-fit-outs     /interior-fit-outs-and-refurbishments   301
+
+# SPA fallback (last)
+/*                               /index.html                      200
