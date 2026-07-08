@@ -1,0 +1,19 @@
+{
+  "name": "direct-interiors-nw",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Direct Interiors North West — static site (Eleventy). Premium refresh of directinteriorsnw.com preserving the existing brand, copy and photography.",
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve",
+    "check:placeholders": "bash scripts/check-placeholders.sh _site",
+    "check:links": "node scripts/check-links.mjs _site",
+    "check": "npm run check:placeholders && npm run check:links",
+    "verify": "npm run build && npm run check"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy-img": "^6.0.4"
+  }
+}
