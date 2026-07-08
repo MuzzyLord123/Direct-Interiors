@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="8" fill="#595959"/>
-  <text x="32" y="40" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">di</text>
-  <rect x="14" y="46" width="24" height="4" fill="#3bb5e6"/>
-  <rect x="40" y="46" width="10" height="4" fill="#ff0000"/>
-</svg>
