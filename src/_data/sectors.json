@@ -1,0 +1,10 @@
+[
+  { "title": "Commercial", "image": "commercial-sector-b8b5b4cc.jpg", "alt": "Modern open-plan commercial office interior" },
+  { "title": "Public", "image": "public-sector.jpg", "alt": "Public sector building interior" },
+  { "title": "Education", "image": "education-sector.jpg", "alt": "School classroom interior" },
+  { "title": "Leisure, Sports & Tourism", "image": "leisure-sport-sector.jpg", "alt": "Leisure and sports facility interior" },
+  { "title": "Hospitality", "image": "hospitality-sector.jpg", "alt": "Hospitality venue interior" },
+  { "title": "Healthcare", "image": "healthcare-sector.jpg", "alt": "Healthcare facility interior" },
+  { "title": "Retail", "image": "retail-sector.jpg", "alt": "Retail store interior" },
+  { "title": "Residential", "image": "residential-sector.jpg", "alt": "Residential interior" }
+]
