@@ -176,7 +176,7 @@ export function SolutionDetail({ slug }: { slug: string }) {
       {s.benefit && (
         <Section tone="light" aria-label="Why it matters">
           <Reveal>
-            <div className="relative overflow-hidden rounded-sm border border-brass/40 bg-ink p-10 text-text-dark shadow-lift md:p-16">
+            <div className="on-dark relative overflow-hidden rounded-sm border border-brass/40 bg-ink p-10 text-text-dark shadow-lift md:p-16">
               <div className="grain absolute inset-0" aria-hidden="true" />
               <span className="absolute inset-y-0 left-0 w-1 bg-brass" aria-hidden="true" />
               <div className="relative z-[1] max-w-2xl">

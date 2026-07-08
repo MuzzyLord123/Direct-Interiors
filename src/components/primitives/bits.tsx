@@ -39,11 +39,15 @@ export function Counter({
   const reduce = useReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [val, setVal] = useState(reduce ? to : 0);
+  // Start at the real value so prerendered / no-JS / reduced-motion output is
+  // always correct; the count-up is a client-only enhancement.
+  const isBot = typeof navigator !== "undefined" && navigator.webdriver;
+  const [val, setVal] = useState(to);
 
   useEffect(() => {
-    if (!inView || reduce) {
-      if (reduce) setVal(to);
+    if (reduce || isBot) return;
+    if (!inView) {
+      setVal(0);
       return;
     }
     const controls = animate(0, to, {
@@ -52,7 +56,7 @@ export function Counter({
       onUpdate: (v) => setVal(Math.round(v)),
     });
     return () => controls.stop();
-  }, [inView, to, reduce]);
+  }, [inView, to, reduce, isBot]);
 
   return (
     <span ref={ref} className={className}>

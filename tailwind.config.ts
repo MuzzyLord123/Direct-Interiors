@@ -27,10 +27,13 @@ export default {
           light: "#E8D5A3",
           // AA-safe brass for small text on dark ink (>=4.5:1)
           text: "#D8BC85",
+          // AA-safe brass for text on LIGHT (bone/sand) surfaces (>=4.5:1 on sand)
+          deep: "#725426",
         },
         stone: "#D4C5A9", // borders / dividers
         sand: "#E8DDD0", // hover fills
-        graphite: "#7C7870", // secondary text
+        graphite: "#7C7870", // secondary text on DARK surfaces
+        mute: "#5f5c56", // secondary text on LIGHT surfaces (AA on bone/sand/white)
         success: "#4A7C59",
         danger: "#B85C38",
         // semantic text tokens

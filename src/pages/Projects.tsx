@@ -37,7 +37,7 @@ function FilterPill({ label, active, onClick }: { label: string; active: boolean
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "min-h-[40px] rounded-full border px-5 py-2 font-mono text-xs uppercase tracking-[0.12em] transition-colors duration-200 ease-editorial focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass",
+        "min-h-[44px] rounded-full border px-5 py-2 font-mono text-xs uppercase tracking-[0.12em] transition-colors duration-200 ease-editorial focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass",
         active
           ? "border-brass bg-brass text-ink"
           : "border-white/20 text-text-dark/70 hover:border-brass/60 hover:text-brass",
@@ -168,7 +168,7 @@ export function Projects() {
             <button
               type="button"
               onClick={reset}
-              className="inline-flex min-h-[40px] items-center gap-1.5 self-start font-mono text-[0.7rem] uppercase tracking-[0.16em] text-text-dark/60 transition-colors hover:text-brass focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+              className="inline-flex min-h-[44px] items-center gap-1.5 self-start font-mono text-[0.7rem] uppercase tracking-[0.16em] text-text-dark/60 transition-colors hover:text-brass focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
             >
               <span aria-hidden="true">×</span> Clear filters
             </button>

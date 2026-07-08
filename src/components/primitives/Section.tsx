@@ -41,6 +41,7 @@ export const Section = forwardRef<HTMLElement, Props>(function Section(
       className={cn(
         "relative py-section",
         toneClass[tone],
+        tone === "light" && "tone-light",
         cutClass[cut],
         grain && "grain",
         plaster && "plaster",

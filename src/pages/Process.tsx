@@ -240,7 +240,7 @@ export function Process() {
 
         {/* Price promise panel */}
         <Reveal className="mt-16">
-          <div className="rounded-sm border border-brass/30 bg-ink p-10 text-center md:p-16">
+          <div className="on-dark rounded-sm border border-brass/30 bg-ink p-10 text-center md:p-16">
             <p className="eyebrow mb-5">The price promise</p>
             <GoldRule className="mx-auto mb-7" width="90px" />
             <p className="mx-auto max-w-2xl font-display text-display-sm font-light text-text-dark md:text-display-md">

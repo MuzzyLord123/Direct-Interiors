@@ -161,7 +161,7 @@ export function WhyDirect() {
                   key={n}
                   className="flex h-20 items-center justify-center rounded-sm border border-dashed border-graphite/25 bg-white/40"
                 >
-                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-graphite/60">
+                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-mute">
                     Coming soon
                   </span>
                 </div>

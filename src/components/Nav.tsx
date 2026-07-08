@@ -8,7 +8,7 @@ import { cn } from "@/lib/cn";
 
 function Wordmark({ onDark = true }: { onDark?: boolean }) {
   return (
-    <Link to="/" className="group block leading-none" aria-label={`${site.name} — home`}>
+    <Link to="/" className="group block leading-none" aria-label={`${site.legalName} — home`}>
       <span
         className={cn(
           "block font-display text-[1.35rem] font-medium tracking-wordmark transition-colors md:text-2xl",
@@ -31,6 +31,7 @@ export function Nav() {
   const { pathname } = useLocation();
   const reduce = useReducedMotion();
   const dropdownRef = useRef<HTMLLIElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
@@ -141,7 +142,7 @@ export function Nav() {
                               <span className="block font-sans text-sm text-text-dark group-hover:text-brass">
                                 {s.label}
                               </span>
-                              <span className="mt-0.5 block font-sans text-xs text-graphite">{s.descriptor}</span>
+                              <span className="mt-0.5 block font-sans text-xs text-text-dark/70">{s.descriptor}</span>
                             </Link>
                           ))}
                         </div>
@@ -174,6 +175,7 @@ export function Nav() {
 
         {/* Mobile toggle */}
         <button
+          ref={toggleRef}
           type="button"
           className="relative z-[130] flex h-11 w-11 items-center justify-center lg:hidden"
           aria-expanded={mobileOpen}
@@ -201,7 +203,7 @@ export function Nav() {
         </button>
       </div>
 
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} />
+      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} triggerRef={toggleRef} />
     </header>
   );
 }
@@ -228,12 +230,63 @@ function NavLink({ label, href, active }: { label: string; href: string; active:
   );
 }
 
-function MobileMenu({ open, onClose, pathname }: { open: boolean; onClose: () => void; pathname: string }) {
+function MobileMenu({
+  open,
+  onClose,
+  pathname,
+  triggerRef,
+}: {
+  open: boolean;
+  onClose: () => void;
+  pathname: string;
+  triggerRef: React.RefObject<HTMLButtonElement>;
+}) {
   const items = [...navPrimary.filter((n) => n.label !== "Solutions"), ...navSolutions.map((s) => ({ label: s.label, href: s.href }))];
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    // hide the rest of the page from AT + tab order while the menu is open
+    const main = document.getElementById("main");
+    const footer = document.querySelector("footer");
+    [main, footer].forEach((el) => el?.setAttribute("inert", ""));
+
+    // focus the first link
+    const focusables = () => panelRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? [];
+    const first = focusables()[0];
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const f = Array.from(focusables());
+      if (f.length === 0) return;
+      const firstEl = f[0];
+      const lastEl = f[f.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && active === firstEl) {
+        e.preventDefault();
+        (triggerRef.current ?? lastEl).focus();
+      } else if (!e.shiftKey && active === triggerRef.current) {
+        e.preventDefault();
+        firstEl.focus();
+      } else if (!e.shiftKey && active === lastEl) {
+        e.preventDefault();
+        (triggerRef.current ?? firstEl).focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      [main, footer].forEach((el) => el?.removeAttribute("inert"));
+      triggerRef.current?.focus();
+    };
+  }, [open, triggerRef]);
+
   return (
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={panelRef}
           id="mobile-menu"
           className="fixed inset-0 z-[125] grain plaster overflow-y-auto bg-ink lg:hidden"
           initial={{ opacity: 0 }}

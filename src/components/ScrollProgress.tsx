@@ -1,9 +1,12 @@
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
 
 /** 2px gold scroll-progress bar pinned to the top of the viewport. */
 export function ScrollProgress() {
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
+  const spring = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
+  // Skip the spring under reduced motion — bind directly to scroll position.
+  const scaleX = reduce ? scrollYProgress : spring;
   return (
     <motion.div
       aria-hidden="true"

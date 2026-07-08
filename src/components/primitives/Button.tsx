@@ -22,7 +22,7 @@ const button = cva(
         link: "px-0 text-brass hover:text-brass-light underline-offset-4",
       },
       size: {
-        sm: "text-[0.8rem] px-5 py-2.5 min-h-[40px]",
+        sm: "text-[0.8rem] px-5 py-2.5 min-h-[44px]",
         md: "text-sm px-7 py-3.5 min-h-[48px]",
         lg: "text-base px-9 py-4 min-h-[54px]",
       },

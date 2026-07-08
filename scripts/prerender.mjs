@@ -30,6 +30,13 @@ const server = createServer((req, res) =>
 );
 await new Promise((r) => server.listen(PORT, r));
 
+// Read the built CSS so we can inline it (removes the render-blocking request → faster FCP/LCP).
+const cssLinkMatch = shell.match(/<link[^>]+rel="stylesheet"[^>]+href="(\/assets\/[^"]+\.css)"[^>]*>/i);
+let cssInline = "";
+if (cssLinkMatch && existsSync(join(DIST, cssLinkMatch[1]))) {
+  cssInline = readFileSync(join(DIST, cssLinkMatch[1]), "utf8");
+}
+
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1366, height: 900 } });
 
@@ -38,11 +45,9 @@ let ok = 0;
 for (const route of allRoutes) {
   const url = `http://localhost:${PORT}${route}`;
   await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
-  // ensure the client router has actually rendered content before capture
-  await page.waitForFunction(() => {
-    const root = document.getElementById("root");
-    return root && root.children.length > 0 && document.querySelector("main");
-  }, { timeout: 20000 });
+  // ensure the client router has rendered the real page (lazy chunk resolved,
+  // not just the Suspense fallback) before capture — wait for a real <h1>.
+  await page.waitForFunction(() => !!document.querySelector("main h1, #main h1, h1"), { timeout: 20000 });
   // trigger in-view reveals + lazy images across the whole page
   await page.evaluate(async () => {
     await new Promise((res) => setTimeout(res, 100));
@@ -56,6 +61,15 @@ for (const route of allRoutes) {
   });
   // rewrite absolute-origin URLs already handled by helmet; capture full doc
   let html = "<!doctype html>\n" + (await page.evaluate(() => document.documentElement.outerHTML));
+
+  // Inline the CSS by default (removes the render-blocking request → faster
+  // FCP). Set INLINE_CSS=0 to keep an external cacheable stylesheet instead.
+  if (process.env.INLINE_CSS !== "0" && cssInline && cssLinkMatch) {
+    html = html.replace(
+      /<link[^>]+rel="stylesheet"[^>]+href="\/assets\/[^"]+\.css"[^>]*>/i,
+      `<style>${cssInline}</style><link rel="prefetch" href="${cssLinkMatch[1]}" as="style">`,
+    );
+  }
 
   const outPath = route === "/"
     ? join(DIST, "index.html")

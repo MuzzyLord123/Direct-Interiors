@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -50,8 +50,8 @@ const enquiryToNeed: Record<string, string> = {
 };
 
 const inputBase =
-  "w-full rounded-sm border bg-white px-4 py-3 font-sans text-text-light placeholder:text-graphite/70 focus:outline-none focus:ring-2 focus:ring-brass/70 border-stone";
-const errorText = "mt-1.5 font-sans text-sm text-danger";
+  "w-full rounded-sm border bg-white px-4 py-3 font-sans text-text-light placeholder:text-mute focus:outline-none focus:ring-2 focus:ring-brass/70 border-stone";
+const errorText = "mt-1.5 font-sans text-sm text-[#9e4224]";
 
 export function EnquiryForm() {
   const reduce = useReducedMotion();
@@ -88,9 +88,20 @@ export function EnquiryForm() {
     },
   });
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const focusFirstInvalid = () => {
+    // after validation state settles, move focus to the first invalid control/group
+    window.setTimeout(() => {
+      const el = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]');
+      el?.focus();
+      el?.scrollIntoView({ block: "center", behavior: "smooth" });
+    }, 0);
+  };
+
   const next = async () => {
     const ok = await trigger(STEP_FIELDS[step]);
     if (ok) setStep((s) => Math.min(s + 1, 3));
+    else focusFirstInvalid();
   };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
@@ -118,7 +129,7 @@ export function EnquiryForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-md border border-stone bg-white p-8 md:p-10" role="status" aria-live="polite">
+      <div className="tone-light rounded-md border border-stone bg-white p-8 md:p-10" role="status" aria-live="polite">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10">
           <motion.span
             initial={reduce ? undefined : { scale: 0 }}
@@ -143,7 +154,7 @@ export function EnquiryForm() {
   }
 
   return (
-    <div className="rounded-md border border-stone bg-white p-6 md:p-8">
+    <div className="tone-light rounded-md border border-stone bg-white p-6 md:p-8">
       {/* progress */}
       <ol className="mb-8 flex items-center gap-2" aria-label="Form progress">
         {STEP_LABELS.map((label, i) => (
@@ -166,7 +177,7 @@ export function EnquiryForm() {
         ))}
       </ol>
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit, focusFirstInvalid)} noValidate>
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -184,7 +195,14 @@ export function EnquiryForm() {
                   control={control}
                   name="premises"
                   render={({ field }) => (
-                    <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Premises type">
+                    <div
+                      className="flex flex-wrap gap-2"
+                      role="radiogroup"
+                      aria-label="Premises type"
+                      tabIndex={-1}
+                      aria-invalid={!!errors.premises}
+                      aria-describedby={errors.premises ? "premises-error" : undefined}
+                    >
                       {PREMISES.map((p) => (
                         <button
                           type="button"
@@ -193,7 +211,7 @@ export function EnquiryForm() {
                           aria-checked={field.value === p}
                           onClick={() => field.onChange(p)}
                           className={cn(
-                            "rounded-sm border px-4 py-2.5 font-sans text-sm transition-colors",
+                            "min-h-[44px] rounded-sm border px-4 py-2.5 font-sans text-sm transition-colors",
                             field.value === p
                               ? "border-brass bg-brass/10 text-text-light"
                               : "border-stone text-graphite hover:border-brass/60",
@@ -205,7 +223,7 @@ export function EnquiryForm() {
                     </div>
                   )}
                 />
-                {errors.premises && <p className={errorText}>{errors.premises.message}</p>}
+                {errors.premises && <p id="premises-error" className={errorText}>{errors.premises.message}</p>}
 
                 <div className="mt-6">
                   <label htmlFor="postcode" className="mb-1.5 block font-sans text-sm font-medium text-text-light">
@@ -223,7 +241,14 @@ export function EnquiryForm() {
                   control={control}
                   name="needs"
                   render={({ field }) => (
-                    <div className="flex flex-wrap gap-2" role="group" aria-label="Services needed">
+                    <div
+                      className="flex flex-wrap gap-2"
+                      role="group"
+                      aria-label="Services needed"
+                      tabIndex={-1}
+                      aria-invalid={!!errors.needs}
+                      aria-describedby={errors.needs ? "needs-error" : undefined}
+                    >
                       {NEEDS.map((n) => {
                         const active = field.value.includes(n);
                         return (
@@ -233,7 +258,7 @@ export function EnquiryForm() {
                             aria-pressed={active}
                             onClick={() => field.onChange(active ? field.value.filter((v) => v !== n) : [...field.value, n])}
                             className={cn(
-                              "rounded-sm border px-4 py-2.5 font-sans text-sm transition-colors",
+                              "min-h-[44px] rounded-sm border px-4 py-2.5 font-sans text-sm transition-colors",
                               active ? "border-brass bg-brass/10 text-text-light" : "border-stone text-graphite hover:border-brass/60",
                             )}
                           >
@@ -244,7 +269,7 @@ export function EnquiryForm() {
                     </div>
                   )}
                 />
-                {errors.needs && <p className={errorText}>{errors.needs.message}</p>}
+                {errors.needs && <p id="needs-error" className={errorText}>{errors.needs.message}</p>}
 
                 <div className="mt-6">
                   <span className="mb-2 block font-sans text-sm font-medium text-text-light">Timescale</span>
@@ -252,7 +277,14 @@ export function EnquiryForm() {
                     control={control}
                     name="timescale"
                     render={({ field }) => (
-                      <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Timescale">
+                      <div
+                        className="flex flex-wrap gap-2"
+                        role="radiogroup"
+                        aria-label="Timescale"
+                        tabIndex={-1}
+                        aria-invalid={!!errors.timescale}
+                        aria-describedby={errors.timescale ? "timescale-error" : undefined}
+                      >
                         {TIMESCALES.map((t) => (
                           <button
                             type="button"
@@ -261,7 +293,7 @@ export function EnquiryForm() {
                             aria-checked={field.value === t}
                             onClick={() => field.onChange(t)}
                             className={cn(
-                              "rounded-sm border px-4 py-2.5 font-sans text-sm transition-colors",
+                              "min-h-[44px] rounded-sm border px-4 py-2.5 font-sans text-sm transition-colors",
                               field.value === t ? "border-brass bg-brass/10 text-text-light" : "border-stone text-graphite hover:border-brass/60",
                             )}
                           >
@@ -271,7 +303,7 @@ export function EnquiryForm() {
                       </div>
                     )}
                   />
-                  {errors.timescale && <p className={errorText}>{errors.timescale.message}</p>}
+                  {errors.timescale && <p id="timescale-error" className={errorText}>{errors.timescale.message}</p>}
                 </div>
 
                 <div className="mt-6">
@@ -288,8 +320,8 @@ export function EnquiryForm() {
                 <legend className="mb-4 font-display text-2xl font-light text-text-light sm:col-span-2">Your details</legend>
                 <div>
                   <label htmlFor="name" className="mb-1.5 block font-sans text-sm font-medium text-text-light">Name</label>
-                  <input id="name" autoComplete="name" className={inputBase} aria-invalid={!!errors.name} {...register("name")} />
-                  {errors.name && <p className={errorText}>{errors.name.message}</p>}
+                  <input id="name" autoComplete="name" className={inputBase} aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} {...register("name")} />
+                  {errors.name && <p id="name-error" className={errorText}>{errors.name.message}</p>}
                 </div>
                 <div>
                   <label htmlFor="company" className="mb-1.5 block font-sans text-sm font-medium text-text-light">
@@ -299,8 +331,8 @@ export function EnquiryForm() {
                 </div>
                 <div>
                   <label htmlFor="email" className="mb-1.5 block font-sans text-sm font-medium text-text-light">Email</label>
-                  <input id="email" type="email" autoComplete="email" className={inputBase} aria-invalid={!!errors.email} {...register("email")} />
-                  {errors.email && <p className={errorText}>{errors.email.message}</p>}
+                  <input id="email" type="email" autoComplete="email" className={inputBase} aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...register("email")} />
+                  {errors.email && <p id="email-error" className={errorText}>{errors.email.message}</p>}
                 </div>
                 <div>
                   <label htmlFor="phone" className="mb-1.5 block font-sans text-sm font-medium text-text-light">
@@ -323,7 +355,7 @@ export function EnquiryForm() {
                             aria-checked={field.value === m}
                             onClick={() => field.onChange(m)}
                             className={cn(
-                              "rounded-sm border px-5 py-2.5 font-sans text-sm transition-colors",
+                              "min-h-[44px] rounded-sm border px-5 py-2.5 font-sans text-sm transition-colors",
                               field.value === m ? "border-brass bg-brass/10 text-text-light" : "border-stone text-graphite hover:border-brass/60",
                             )}
                           >
@@ -341,6 +373,7 @@ export function EnquiryForm() {
                       type="checkbox"
                       className="mt-0.5 h-5 w-5 shrink-0 rounded-sm border-stone text-brass focus:ring-brass"
                       aria-invalid={!!errors.consent}
+                      aria-describedby={errors.consent ? "consent-error" : undefined}
                       {...register("consent")}
                     />
                     <span>
@@ -348,7 +381,7 @@ export function EnquiryForm() {
                       <a href="/privacy" className="text-text-light underline hover:text-brass">privacy policy</a>.
                     </span>
                   </label>
-                  {errors.consent && <p className={errorText}>{errors.consent.message as string}</p>}
+                  {errors.consent && <p id="consent-error" className={errorText}>{errors.consent.message as string}</p>}
                 </div>
               </fieldset>
             )}
@@ -399,8 +432,8 @@ export function EnquiryForm() {
                 ? "Sorry, something went wrong sending your message."
                 : "Our online form isn't connected just yet."}{" "}
               Please call us on{" "}
-              <a href={site.phoneHref} className="font-medium text-danger underline">{site.phoneDisplay}</a> or email{" "}
-              <a href={`mailto:${site.email}`} className="font-medium text-danger underline">{site.email}</a> and we'll get straight back to you.
+              <a href={site.phoneHref} className="font-medium text-[#9e4224] underline">{site.phoneDisplay}</a> or email{" "}
+              <a href={`mailto:${site.email}`} className="font-medium text-[#9e4224] underline">{site.email}</a> and we'll get straight back to you.
             </p>
           </div>
         )}
@@ -411,7 +444,7 @@ export function EnquiryForm() {
             type="button"
             onClick={back}
             disabled={step === 0}
-            className="font-sans text-sm text-graphite transition-colors hover:text-text-light disabled:invisible"
+            className="-ml-2 inline-flex min-h-[44px] items-center rounded-sm px-2 font-sans text-sm text-graphite transition-colors hover:text-text-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass disabled:invisible"
           >
             ← Back
           </button>

@@ -21,6 +21,7 @@ interface Props {
 /** Standard interior-page hero: dark photo, scrim, breadcrumb, headline. */
 export function PageHero({ eyebrow, title, lead, image, imageAlt, crumbs, children, size = "compact", imagePosition }: Props) {
   const reduce = useReducedMotion();
+  const doMotion = !reduce;
   return (
     <section
       className={cn(
@@ -52,9 +53,9 @@ export function PageHero({ eyebrow, title, lead, image, imageAlt, crumbs, childr
         {eyebrow && (
           <motion.p
             className="eyebrow mb-5"
-            initial={{ opacity: 0, y: reduce ? 0 : 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            initial={doMotion ? { opacity: 0, y: 12 } : false}
+            animate={doMotion ? { opacity: 1, y: 0 } : false}
+            transition={{ duration: 0.4, ease: EASE }}
           >
             {eyebrow}
           </motion.p>
@@ -62,18 +63,18 @@ export function PageHero({ eyebrow, title, lead, image, imageAlt, crumbs, childr
         <GoldRule className="mb-6" />
         <motion.h1
           className="max-w-4xl font-display text-display-lg text-text-dark"
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+          initial={doMotion ? { opacity: 0, y: 20 } : false}
+          animate={doMotion ? { opacity: 1, y: 0 } : false}
+          transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
         >
           {title}
         </motion.h1>
         {lead && (
           <motion.p
             className="mt-6 max-w-2xl font-sans text-lg font-light text-text-dark/80"
-            initial={{ opacity: 0, y: reduce ? 0 : 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
+            initial={doMotion ? { opacity: 0, y: 16 } : false}
+            animate={doMotion ? { opacity: 1, y: 0 } : false}
+            transition={{ duration: 0.5, ease: EASE, delay: 0.16 }}
           >
             {lead}
           </motion.p>

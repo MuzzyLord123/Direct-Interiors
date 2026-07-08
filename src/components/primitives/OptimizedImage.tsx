@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { imageManifest } from "@/data/imageManifest";
 import { cn } from "@/lib/cn";
 
@@ -35,6 +35,12 @@ export function OptimizedImage({
   position = "center",
 }: Props) {
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  // On hydration (or from cache) the image may already be complete, so onLoad
+  // never fires — reveal it immediately in that case.
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true);
+  }, []);
   const entry = imageManifest[src];
 
   if (!entry) {
@@ -65,6 +71,7 @@ export function OptimizedImage({
         <source type="image/avif" srcSet={srcset(src, "avif", widths)} sizes={sizes} />
         <source type="image/webp" srcSet={srcset(src, "webp", widths)} sizes={sizes} />
         <img
+          ref={imgRef}
           src={`/img/${src}-${widths[widths.length - 1]}.jpg`}
           srcSet={srcset(src, "jpg", widths)}
           sizes={sizes}

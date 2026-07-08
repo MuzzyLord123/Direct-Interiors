@@ -17,7 +17,6 @@ import { solutions } from "@/data/solutions";
 import { projects, getProject } from "@/data/projects";
 import { sectors } from "@/data/sectors";
 import { site, EST_YEAR } from "@/data/site";
-import { localBusinessJsonLd } from "@/lib/seo";
 import { EASE, lineClip } from "@/lib/motion";
 
 const HERO_LINES = ["Spaces built", "around your", "business."];
@@ -57,8 +56,9 @@ const PILLARS = [
 
 export function Home() {
   const reduce = useReducedMotion();
+  // hero uses raw motion; gate it so hydration matches the prerendered paint
+  const doMotion = !reduce;
   const featured = getProject("padeswood-buckley-golf-club")!;
-  const yearsTrading = new Date().getFullYear() - EST_YEAR;
 
   return (
     <>
@@ -67,7 +67,6 @@ export function Home() {
         description={`Commercial interior fit-outs, refurbishments and bespoke installations across Chester, Deeside, North Wales and the North West. Every trade in-house, est. ${EST_YEAR}. Free survey & written quote.`}
         path="/"
         image="bell-meadow-hero-0a75fafa"
-        jsonLd={localBusinessJsonLd()}
       />
 
       {/* ---------------- HERO ---------------- */}
@@ -75,9 +74,9 @@ export function Home() {
         <div className="absolute inset-0">
           <motion.div
             className="h-full w-full"
-            initial={reduce ? undefined : { scale: 1.08 }}
-            animate={reduce ? undefined : { scale: 1 }}
-            transition={{ duration: 1.6, ease: EASE }}
+            initial={doMotion ? { scale: 1.08 } : false}
+            animate={doMotion ? { scale: 1 } : false}
+            transition={{ duration: 1.1, ease: EASE }}
           >
             <OptimizedImage
               src="bell-meadow-hero-0a75fafa"
@@ -96,17 +95,17 @@ export function Home() {
           <div className="max-w-3xl">
             <motion.p
               className="eyebrow mb-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.15, duration: 0.7 }}
+              initial={doMotion ? { opacity: 0 } : false}
+              animate={doMotion ? { opacity: 1 } : false}
+              transition={{ delay: 0.05, duration: 0.5 }}
             >
               Commercial Interiors — Est. {EST_YEAR}
             </motion.p>
             <motion.span
               className="mb-7 block h-px w-20 origin-left bg-brass"
-              initial={{ scaleX: reduce ? 1 : 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.2, duration: 0.9, ease: EASE }}
+              initial={doMotion ? { scaleX: 0 } : false}
+              animate={doMotion ? { scaleX: 1 } : false}
+              transition={{ delay: 0.1, duration: 0.6, ease: EASE }}
             />
             <h1 className="font-display text-display-xl font-light text-text-dark">
               {HERO_LINES.map((line, i) => (
@@ -114,9 +113,9 @@ export function Home() {
                   <motion.span
                     className="block"
                     variants={lineClip}
-                    initial="hidden"
-                    animate="show"
-                    transition={{ delay: 0.3 + i * 0.12, duration: 0.8, ease: EASE }}
+                    initial={doMotion ? "hidden" : false}
+                    animate={doMotion ? "show" : false}
+                    transition={{ delay: 0.1 + i * 0.07, duration: 0.6, ease: EASE }}
                   >
                     {line}
                   </motion.span>
@@ -125,18 +124,18 @@ export function Home() {
             </h1>
             <motion.p
               className="mt-7 max-w-xl font-sans text-lg font-light text-text-dark/80"
-              initial={{ opacity: 0, y: reduce ? 0 : 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.75, duration: 0.7, ease: EASE }}
+              initial={doMotion ? { opacity: 0, y: 16 } : false}
+              animate={doMotion ? { opacity: 1, y: 0 } : false}
+              transition={{ delay: 0.28, duration: 0.5, ease: EASE }}
             >
               From a single suspended ceiling to a full turnkey fit-out, Direct Interiors delivers every trade
               in-house, on programme, across Chester, North Wales and the North West.
             </motion.p>
             <motion.div
               className="mt-9 flex flex-wrap items-center gap-4"
-              initial={{ opacity: 0, y: reduce ? 0 : 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.7, ease: EASE }}
+              initial={doMotion ? { opacity: 0, y: 16 } : false}
+              animate={doMotion ? { opacity: 1, y: 0 } : false}
+              transition={{ delay: 0.4, duration: 0.5, ease: EASE }}
             >
               <Button to="/contact" variant="gold" size="lg" arrow>
                 Get Your Free Quote
@@ -147,9 +146,9 @@ export function Home() {
             </motion.div>
             <motion.ul
               className="mt-10 flex flex-wrap gap-x-7 gap-y-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1, duration: 0.7 }}
+              initial={doMotion ? { opacity: 0 } : false}
+              animate={doMotion ? { opacity: 1 } : false}
+              transition={{ delay: 0.5, duration: 0.5 }}
             >
               {["Free no-obligation site survey", "Every trade in-house", "CSCS-carded teams"].map((t) => (
                 <li key={t} className="flex items-center gap-2 font-sans text-sm text-text-dark/70">
@@ -164,9 +163,9 @@ export function Home() {
         {/* Floating consultation card (desktop) */}
         <motion.aside
           className="absolute bottom-12 right-10 z-[1] hidden w-72 rounded-sm border border-brass/30 bg-ink/70 p-7 backdrop-blur-md xl:block"
-          initial={{ opacity: 0, y: reduce ? 0 : 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.7, ease: EASE }}
+          initial={doMotion ? { opacity: 0, y: 24 } : false}
+          animate={doMotion ? { opacity: 1, y: 0 } : false}
+          transition={{ delay: 0.55, duration: 0.6, ease: EASE }}
         >
           <p className="eyebrow mb-3">Planning a fit-out?</p>
           <a href={site.phoneHref} className="block font-display text-3xl font-light text-brass hover:text-brass-light">
@@ -330,7 +329,7 @@ export function Home() {
         <Reveal className="mt-16">
           <div className="grid gap-8 border-t border-white/10 pt-12 sm:grid-cols-3">
             {[
-              { v: yearsTrading, s: "+", label: "Years trading" },
+              { v: 20, s: "+", label: "Years trading" },
               { v: 11, s: "", label: "Trades in-house" },
               { v: 8, s: "", label: "Sectors served" },
             ].map((stat) => (

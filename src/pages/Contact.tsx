@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { Seo } from "@/components/Seo";
 import { PageHero } from "@/components/PageHero";
@@ -6,10 +7,46 @@ import { Reveal } from "@/components/primitives/Reveal";
 import { GoldRule } from "@/components/primitives/bits";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import { site } from "@/data/site";
-import { localBusinessJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(site.mapQuery)}&output=embed`;
 const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.mapQuery)}`;
+
+/**
+ * Lazy map facade: renders a lightweight styled placeholder and only loads the
+ * heavy Google Maps iframe when the visitor opts in. Keeps the third-party
+ * request (and its cookies) off the initial page load — better LCP and privacy.
+ */
+function MapEmbed() {
+  const [loaded, setLoaded] = useState(false);
+  if (loaded) {
+    return (
+      <div className="mt-8 overflow-hidden rounded-sm border border-white/10">
+        <iframe
+          title={`Map showing Direct Interiors at ${site.addressOneLine}`}
+          src={mapSrc}
+          width="100%"
+          height="280"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          style={{ border: 0, filter: "grayscale(0.4) contrast(1.05)" }}
+        />
+      </div>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => setLoaded(true)}
+      className="group mt-8 flex h-[200px] w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-sm border border-white/10 bg-ink-soft text-center transition-colors hover:border-brass/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+      aria-label="Load the interactive map"
+    >
+      <MapPin className="h-7 w-7 text-brass" aria-hidden="true" />
+      <span className="font-mono text-xs uppercase tracking-[0.14em] text-brass">Load interactive map</span>
+      <span className="max-w-xs px-4 font-sans text-sm text-text-dark/60">{site.addressOneLine}</span>
+    </button>
+  );
+}
 
 export function Contact() {
   return (
@@ -19,7 +56,7 @@ export function Contact() {
         description={`Get a free quote or book a no-obligation survey for your fit-out or refurbishment. Call ${site.phoneDisplay} — covering Chester, Deeside, North Wales and the North West.`}
         path="/contact"
         image="slider04"
-        jsonLd={[localBusinessJsonLd(), breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact" }])]}
+        jsonLd={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Contact" }])}
       />
 
       <PageHero
@@ -82,17 +119,7 @@ export function Contact() {
               Covering {site.serviceArea}. No hard sell — just honest advice and a fixed written quotation.
             </p>
 
-            <div className="mt-8 overflow-hidden rounded-sm border border-white/10">
-              <iframe
-                title={`Map showing Direct Interiors at ${site.addressOneLine}`}
-                src={mapSrc}
-                width="100%"
-                height="280"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                style={{ border: 0, filter: "grayscale(0.4) contrast(1.05)" }}
-              />
-            </div>
+            <MapEmbed />
             <a
               href={mapLink}
               target="_blank"

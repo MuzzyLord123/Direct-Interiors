@@ -27,7 +27,7 @@ export function IntroOverlay() {
     <AnimatePresence>
       {show && (
         <motion.div
-          className="fixed inset-0 z-[300] flex items-center justify-center bg-ink"
+          className="pointer-events-none fixed inset-0 z-[300] flex items-center justify-center bg-ink"
           initial={{ opacity: 1 }}
           exit={{ y: "-100%", transition: { duration: 0.7, ease: EASE } }}
           aria-hidden="true"

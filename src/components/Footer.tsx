@@ -37,10 +37,10 @@ export function Footer() {
               <br />
               {site.address.county} {site.address.postcode}
             </address>
-            <a href={site.phoneHref} className="mt-4 block font-mono text-lg text-brass hover:text-brass-light">
+            <a href={site.phoneHref} className="mt-4 inline-block py-1 font-mono text-lg text-brass hover:text-brass-light">
               {site.phoneDisplay}
             </a>
-            <a href={`mailto:${site.email}`} className="block text-sm text-text-dark/70 hover:text-brass link-underline">
+            <a href={`mailto:${site.email}`} className="inline-block py-1.5 text-sm text-text-dark/70 hover:text-brass link-underline">
               {site.email}
             </a>
           </div>
@@ -52,7 +52,7 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm">
               {navSolutions.map((s) => (
                 <li key={s.href}>
-                  <Link to={s.href} className="text-text-dark/75 transition-colors hover:text-brass">
+                  <Link to={s.href} className="inline-block py-1 text-text-dark/75 transition-colors hover:text-brass">
                     {s.label}
                   </Link>
                 </li>
@@ -74,12 +74,12 @@ export function Footer() {
                         href={c.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-text-dark/75 transition-colors hover:text-brass"
+                        className="inline-block py-1 text-text-dark/75 transition-colors hover:text-brass"
                       >
                         {c.label}
                       </a>
                     ) : (
-                      <Link to={c.href} className="text-text-dark/75 transition-colors hover:text-brass">
+                      <Link to={c.href} className="inline-block py-1 text-text-dark/75 transition-colors hover:text-brass">
                         {c.label}
                       </Link>
                     )}
@@ -96,7 +96,7 @@ export function Footer() {
             <ul className="mb-6 space-y-2.5 text-sm">
               {help.map((h) => (
                 <li key={h.label}>
-                  <Link to={h.href} className="text-text-dark/75 transition-colors hover:text-brass">
+                  <Link to={h.href} className="inline-block py-1 text-text-dark/75 transition-colors hover:text-brass">
                     {h.label}
                   </Link>
                 </li>

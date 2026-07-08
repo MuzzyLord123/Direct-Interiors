@@ -11,7 +11,7 @@ export function ProjectCard({ project, className }: { project: Project; classNam
     <Link
       to={`/projects/${project.slug}`}
       className={cn(
-        "group relative block overflow-hidden rounded-sm border border-white/10 bg-ink-soft transition-all duration-300 ease-editorial hover:-translate-y-1.5 hover:border-brass/50 hover:shadow-lift focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass",
+        "on-dark group relative block overflow-hidden rounded-sm border border-white/10 bg-ink-soft transition-all duration-300 ease-editorial hover:-translate-y-1.5 hover:border-brass/50 hover:shadow-lift focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass",
         className,
       )}
     >
@@ -41,7 +41,7 @@ export function SolutionCard({ solution, className }: { solution: Solution; clas
     <Link
       to={`/${solution.slug}`}
       className={cn(
-        "group relative flex h-full flex-col rounded-sm border border-white/10 bg-white/[0.03] p-8 transition-all duration-300 ease-editorial hover:-translate-y-1.5 hover:border-brass/50 hover:bg-white/[0.05] hover:shadow-lift focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass",
+        "on-dark group relative flex h-full flex-col rounded-sm border border-white/10 bg-white/[0.03] p-8 transition-all duration-300 ease-editorial hover:-translate-y-1.5 hover:border-brass/50 hover:bg-white/[0.05] hover:shadow-lift focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass",
         className,
       )}
     >

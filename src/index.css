@@ -100,6 +100,30 @@
   }
 }
 
+/* ------------------------------------------------------------------
+   Tone-aware accent + muted text colours (WCAG AA).
+   Brass #C8A96E and graphite #7C7870 read fine on the dark ink surface
+   but FAIL contrast on the light (bone/sand) surface. Light sections get
+   the class `tone-light`; inside them, brass/eyebrow text darkens to
+   brass.deep (#725426) and muted text to `mute` (#5f5c56). Dark cards or
+   insets nested inside a light section carry `on-dark`, which re-asserts
+   the bright values.
+   ------------------------------------------------------------------ */
+.tone-light .eyebrow,
+.tone-light .text-brass {
+  color: #725426;
+}
+.tone-light .text-graphite {
+  color: #5f5c56;
+}
+.tone-light .on-dark .eyebrow,
+.tone-light .on-dark .text-brass {
+  color: #c8a96e;
+}
+.tone-light .on-dark .text-graphite {
+  color: #7c7870;
+}
+
 @layer utilities {
   .container-edge {
     @apply mx-auto w-full max-w-content px-6 md:px-10;
