@@ -1,0 +1,58 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/get-a-quote", "destination": "/contact?enquiry=quote", "permanent": true },
+    { "source": "/no-obligation-consultation", "destination": "/contact?enquiry=consultation", "permanent": true },
+    { "source": "/tenders", "destination": "/contact?enquiry=tender", "permanent": true },
+    { "source": "/how-can-we-help", "destination": "/contact", "permanent": true },
+    { "source": "/sub-services", "destination": "/all-trades", "permanent": true },
+
+    { "source": "/gdpr", "destination": "/privacy", "permanent": true },
+    { "source": "/gdpr---level-1", "destination": "/privacy", "permanent": true },
+    { "source": "/gdpr---level-2", "destination": "/privacy", "permanent": true },
+    { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
+    { "source": "/terms-and-conditions", "destination": "/terms", "permanent": true },
+    { "source": "/cookies-policy", "destination": "/cookies", "permanent": true },
+
+    { "source": "/our-work", "destination": "/projects", "permanent": true },
+    { "source": "/example-case-study-for-copying", "destination": "/projects", "permanent": true },
+    { "source": "/servicesbbeea1bd", "destination": "/solutions", "permanent": true },
+    { "source": "/about-us", "destination": "/why-direct", "permanent": true },
+
+    { "source": "/demon-tweeks-wrexham", "destination": "/projects/demon-tweeks-wrexham", "permanent": true },
+    { "source": "/doc-fictoria-welsh-government", "destination": "/projects/doc-fictoria-welsh-government", "permanent": true },
+    { "source": "/padeswood-buckley-golf-club", "destination": "/projects/padeswood-buckley-golf-club", "permanent": true },
+    { "source": "/butchers-dyserth", "destination": "/projects/butchers-dyserth", "permanent": true },
+    { "source": "/matthew-arnold-primary-school-liverpool", "destination": "/projects/matthew-arnold-primary-school-liverpool", "permanent": true },
+    { "source": "/bell-meadow-business-park-chester", "destination": "/projects/bell-meadow-business-park-chester", "permanent": true },
+    { "source": "/westrock-wrexham", "destination": "/projects/westrock-wrexham", "permanent": true },
+
+    { "source": "/solutions/interior-fit-outs", "destination": "/interior-fit-outs-and-refurbishments", "permanent": true },
+    { "source": "/solutions/suspended-ceilings", "destination": "/suspended-ceilings", "permanent": true },
+    { "source": "/solutions/partition-walls-drylining", "destination": "/partition-walls-drylining", "permanent": true },
+    { "source": "/solutions/glass-partitions", "destination": "/glass-partitions", "permanent": true },
+    { "source": "/solutions/hygienic-wall-cladding", "destination": "/hygienic-wall-cladding", "permanent": true },
+    { "source": "/solutions/washroom-refurbishments", "destination": "/washroom-refurbishments", "permanent": true },
+    { "source": "/solutions/bespoke-designs", "destination": "/bespoke-designs", "permanent": true },
+    { "source": "/solutions/interior-fit-outs-and-refurbishments", "destination": "/interior-fit-outs-and-refurbishments", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}

@@ -51,17 +51,34 @@ raw `<img>`. Zero-CLS (intrinsic dimensions reserved) with warm blur placeholder
 > **TODO(client):** confirm licensing/ownership of the sector-tile imagery
 > (`*-sector.jpg`) and replace any generic shots with owned project photography where preferred.
 
-## Rendering & SEO
+## Rendering & SEO (browser-free SSG)
 
-`npm run build` runs `scripts/prerender.mjs`: it serves the built SPA, visits every route in
-`scripts/routes.mjs` with headless Chromium, and writes fully-rendered static HTML (including the
-`<head>` tags set by react-helmet-async) to `dist/<route>/index.html`. So every route serves real
-HTML with a unique title, meta description, canonical, Open Graph image and JSON-LD (LocalBusiness
-sitewide + BreadcrumbList/Service on detail pages). It also emits `dist/sitemap.xml`.
+`npm run build` = `tsc --noEmit` → `vite build` (client) → `vite build --ssr` (server bundle) →
+`node scripts/prerender-ssg.mjs`. The SSG script imports the SSR bundle and renders every route in
+`scripts/routes.mjs` with `react-dom/server` `renderToString` + `StaticRouter`, injecting the HTML,
+the `<head>` tags from react-helmet-async, and the inlined critical CSS into the template — writing
+`dist/<route>/index.html`. **No headless browser is used**, so the build runs in plain Node on
+Vercel/CI. Every route serves real HTML with a unique title, meta description, canonical, Open Graph
+image and JSON-LD (LocalBusiness sitewide + BreadcrumbList/Service on detail pages), plus
+`dist/sitemap.xml`.
 
-Redirects for every legacy Duda URL are in `public/_redirects` (Netlify format — translate for other
-hosts). See `docs/BUILD-CONTRACT.md` for the component/design system and `docs/redirects-reference.md`
-for the original URL map.
+Motion components render "settled" (visible, no entrance animation) during SSR (`typeof window ===
+'undefined'`) and for reduced-motion users, so the static HTML is never captured at `opacity:0`. The
+client renders fresh with `createRoot` (we don't hydrate — a browser-rendered Framer-Motion tree
+can't be hydrated cleanly; the prerendered HTML is for crawlers/no-JS).
+
+## Deploying to Vercel
+
+`vercel.json` sets `buildCommand: npm run build`, `outputDirectory: dist`, the legacy-URL redirects,
+and immutable cache headers for `/assets`, `/fonts`, `/img`. Push the repo and import it in Vercel —
+no extra config, no Playwright/Chromium in the build. Vercel serves the prerendered per-route HTML
+directly, `dist/404.html` for unknown paths, and gzip/brotli-compresses at the edge automatically.
+
+`public/_redirects` (Netlify format) is also included for Netlify/other hosts; `vercel.json` is the
+source of truth on Vercel. See `docs/BUILD-CONTRACT.md` for the component/design system and
+`docs/redirects-reference.md` for the original URL map. `scripts/compress.mjs` +
+`scripts/serve-compressed.mjs` are local-only tools (brotli precompress + a compression-aware static
+server) for representative local Lighthouse runs — not needed on Vercel.
 
 ## TODO(client) — confirm before launch
 `npm run check` prints the full list scraped from the code. Key items:
