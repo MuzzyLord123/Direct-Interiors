@@ -8,8 +8,9 @@ import { EASE } from "@/lib/motion";
 // stuck at opacity:0.
 function useSettled() {
   const reduce = useReducedMotion();
+  const isServer = typeof window === "undefined";
   const isBot = typeof navigator !== "undefined" && navigator.webdriver;
-  return reduce || isBot;
+  return reduce || isServer || isBot;
 }
 
 interface RevealProps {

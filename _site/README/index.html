@@ -1,0 +1,89 @@
+<h1>Direct Interiors North West — marketing site</h1>
+<p>A premium, static-rendered marketing site for Direct Interiors North West Ltd, a commercial
+interior fit-out contractor. Built with <strong>Vite + React + TypeScript + Tailwind + Framer Motion</strong>.
+Pure front-of-house: no backend, no auth, no database. All content lives in typed data files.</p>
+<pre><code class="language-bash">npm install
+npm run dev        # local dev server (http://localhost:5173)
+npm run build      # typecheck → vite build → prerender every route to static HTML + sitemap
+npm run preview    # serve the built dist/
+npm run check      # QA gates: placeholder grep + link/img/heading/meta checks (run after build)
+npm run verify     # build + check
+npm run images     # regenerate responsive image variants + manifest from image-masters/
+</code></pre>
+<h2>Where the content lives (edit these, not the components)</h2>
+<p>All copy and structured content is in <strong><code>src/data/</code></strong> — components are purely presentational:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>site.ts</code></td>
+<td>Company facts: name, phone, email, address, <strong><code>EST_YEAR</code></strong>, <code>formEndpoint</code>, sister brand, nav, the 11 trades. <strong>Single source of truth.</strong></td>
+</tr>
+<tr>
+<td><code>solutions.ts</code></td>
+<td>The 7 solutions: scope breakdowns, benefit panels, related projects, FAQs, per-page SEO.</td>
+</tr>
+<tr>
+<td><code>projects.ts</code></td>
+<td>The 7 case studies: story, scope, gallery, meta, related solutions, SEO.</td>
+</tr>
+<tr>
+<td><code>testimonials.ts</code></td>
+<td>Real testimonials (one attribution each).</td>
+</tr>
+<tr>
+<td><code>sectors.ts</code>, <code>areas.ts</code></td>
+<td>Sector tiles and the 6 area pages.</td>
+</tr>
+<tr>
+<td><code>imageManifest.ts</code></td>
+<td><strong>Auto-generated</strong> — do not hand-edit. Run <code>npm run images</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2>Common edits</h2>
+<ul>
+<li><strong>Swap the form endpoint:</strong> set <code>formEndpoint</code> in <code>src/data/site.ts</code> to your Web3Forms/Formspree/
+serverless URL. Until it's set, the enquiry form validates fully then shows a &quot;call us&quot; fallback
+instead of posting to a dead URL. The form POSTs JSON <code>{name, company, email, phone, premises, needs, timescale, description, preferredContact, consent, source}</code>.</li>
+<li><strong>Change the accent colour:</strong> edit the <code>brass</code> tokens in <code>tailwind.config.ts</code> (<code>brass.DEFAULT</code>,
+<code>brass.light</code>, <code>brass.text</code>) — the whole site re-skins from there. <code>--color-accent-on-dark</code>
+equivalents live in the same file.</li>
+<li><strong>Confirmed date:</strong> everything derives from <code>EST_YEAR</code> in <code>site.ts</code> (currently 2002 — see TODO below).</li>
+<li><strong>Add a project / solution / area:</strong> add an entry to the relevant data file, then also add its slug
+to <code>scripts/routes.mjs</code> (so it's prerendered + in the sitemap) and, for projects, to <code>_redirects</code> if
+an old URL should point at it.</li>
+</ul>
+<h2>Images</h2>
+<p>Real project photography lives in <code>image-masters/</code> (sourced from the client's existing site).
+<code>npm run images</code> generates AVIF/WebP/JPEG variants at 4 widths into <code>public/img/</code> plus a blur-up
+manifest. Components use <code>&lt;OptimizedImage src=&quot;&lt;master-filename-without-ext&gt;&quot; alt=&quot;…&quot; /&gt;</code> — never a
+raw <code>&lt;img&gt;</code>. Zero-CLS (intrinsic dimensions reserved) with warm blur placeholders.</p>
+<blockquote>
+<p><strong>TODO(client):</strong> confirm licensing/ownership of the sector-tile imagery
+(<code>*-sector.jpg</code>) and replace any generic shots with owned project photography where preferred.</p>
+</blockquote>
+<h2>Rendering &amp; SEO</h2>
+<p><code>npm run build</code> runs <code>scripts/prerender.mjs</code>: it serves the built SPA, visits every route in
+<code>scripts/routes.mjs</code> with headless Chromium, and writes fully-rendered static HTML (including the
+<code>&lt;head&gt;</code> tags set by react-helmet-async) to <code>dist/&lt;route&gt;/index.html</code>. So every route serves real
+HTML with a unique title, meta description, canonical, Open Graph image and JSON-LD (LocalBusiness
+sitewide + BreadcrumbList/Service on detail pages). It also emits <code>dist/sitemap.xml</code>.</p>
+<p>Redirects for every legacy Duda URL are in <code>public/_redirects</code> (Netlify format — translate for other
+hosts). See <code>docs/BUILD-CONTRACT.md</code> for the component/design system and <code>docs/redirects-reference.md</code>
+for the original URL map.</p>
+<h2>TODO(client) — confirm before launch</h2>
+<p><code>npm run check</code> prints the full list scraped from the code. Key items:</p>
+<ul>
+<li><strong>Est. year:</strong> 2000 (old About page) vs 2002 (brand line) — set <code>EST_YEAR</code>.</li>
+<li><strong>Form endpoint</strong>, opening hours, company registration &amp; VAT numbers, social profiles.</li>
+<li><strong>Testimonial attribution:</strong> the &quot;natural light / glass partitions&quot; quote is credited to both
+Mr B Jones and AURA on the old site — confirm the true author (we use Mr B Jones).</li>
+<li><strong>Accreditations &amp; team photos</strong> for the About page (only add verified badges).</li>
+<li><strong>Legal review</strong> of the privacy/terms/cookies pages (standard templates, not bespoke advice).</li>
+</ul>

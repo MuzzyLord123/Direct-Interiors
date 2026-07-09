@@ -56,8 +56,9 @@ const PILLARS = [
 
 export function Home() {
   const reduce = useReducedMotion();
-  // hero uses raw motion; gate it so hydration matches the prerendered paint
-  const doMotion = !reduce;
+  // hero uses raw motion; settle it (no entrance animation) during SSR so the
+  // prerendered HTML is visible, and for reduced-motion users
+  const doMotion = !reduce && typeof window !== "undefined";
   const featured = getProject("padeswood-buckley-golf-club")!;
 
   return (

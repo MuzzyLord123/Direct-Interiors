@@ -51,8 +51,8 @@ for (const file of walk(DIST)) {
   const h1s = (html.match(/<h1[\s>]/gi) || []).length;
   if (h1s !== 1) flag(rel, `expected exactly one <h1>, found ${h1s}`);
 
-  // title + description present
-  if (!/<title>[^<]{5,}<\/title>/.test(html)) flag(rel, "missing/short <title>");
+  // title + description present (Helmet adds a data-rh attribute in SSR output)
+  if (!/<title[^>]*>[^<]{5,}<\/title>/.test(html)) flag(rel, "missing/short <title>");
   if (!/<meta[^>]+name="description"[^>]+content="[^"]{20,}"/.test(html)) flag(rel, "missing/short meta description");
 }
 

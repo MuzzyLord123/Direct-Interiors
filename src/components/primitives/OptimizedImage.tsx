@@ -34,7 +34,9 @@ export function OptimizedImage({
   treatment = true,
   position = "center",
 }: Props) {
-  const [loaded, setLoaded] = useState(false);
+  // On the server render the image as loaded (visible) so prerendered HTML and
+  // no-JS visitors see it; on the client start with the blur-up placeholder.
+  const [loaded, setLoaded] = useState(() => typeof window === "undefined");
   const imgRef = useRef<HTMLImageElement>(null);
   // On hydration (or from cache) the image may already be complete, so onLoad
   // never fires — reveal it immediately in that case.

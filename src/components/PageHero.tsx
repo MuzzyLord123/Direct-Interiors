@@ -21,7 +21,7 @@ interface Props {
 /** Standard interior-page hero: dark photo, scrim, breadcrumb, headline. */
 export function PageHero({ eyebrow, title, lead, image, imageAlt, crumbs, children, size = "compact", imagePosition }: Props) {
   const reduce = useReducedMotion();
-  const doMotion = !reduce;
+  const doMotion = !reduce && typeof window !== "undefined";
   return (
     <section
       className={cn(

@@ -44,7 +44,7 @@ interface BaseProps extends VariantProps<typeof button> {
   "aria-label"?: string;
 }
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 export function Button({
   children,

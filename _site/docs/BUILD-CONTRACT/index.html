@@ -1,0 +1,102 @@
+<h1>Build Contract — read before writing any page</h1>
+<p>You are building ONE page (or a small set) of the Direct Interiors premium marketing site.
+The foundation is already built and committed. <strong>Match <code>src/pages/Home.tsx</code> exactly for quality,
+motion and visual language — read it first, it is the gold standard.</strong> Then build your page to the
+same bar.</p>
+<h2>Absolute rules</h2>
+<ol>
+<li><strong>Only edit the file(s) you are assigned.</strong> Do NOT create new shared components in
+<code>src/components/**</code> unless your task explicitly says so. Small helpers may live inside your page file.</li>
+<li><strong>Do NOT run <code>npm run build</code>, <code>npm run dev</code>, <code>vite</code>, or start servers.</strong> Integration build is done centrally.
+You may read files. Do not <code>npm install</code>.</li>
+<li><strong>TypeScript strict</strong> — no <code>any</code>, no unused vars/params (config has <code>noUnusedLocals</code>/<code>noUnusedParameters</code>).
+Every import must be used. Every image <code>alt</code> is required.</li>
+<li><strong>Content-truth (CRITICAL):</strong> use ONLY facts already in <code>src/data/**</code>. Never invent review counts,
+star ratings, project totals, insurance figures, accreditations, awards, staff numbers or dates.
+Verified stats you may show: <code>Est. {EST_YEAR}</code> (from site.ts), &quot;11 trades in-house&quot;, &quot;8 sectors served&quot;,
+&quot;20+ / two decades&quot;, &quot;4 weeks&quot; (Padeswood only), &quot;5-out-of-5 food hygiene rating&quot; (Butchers only),
+named clients (Welsh Government, Demon Tweeks). If the design wants a stat you don't have, use a
+verified one or omit it — never fabricate.</li>
+<li><strong>British English.</strong> Warm, confident, plain-spoken, technically precise. CTA wording: &quot;Get Your Free
+Quote&quot;, &quot;Book Your Free Survey&quot;, &quot;See Our Work&quot;, &quot;Talk to the Survey Team&quot; — never &quot;Click here&quot;/&quot;Submit&quot;.</li>
+<li>Every page must render exactly ONE <code>&lt;h1&gt;</code> (usually inside <code>&lt;PageHero&gt;</code>), then logical <code>&lt;h2&gt;</code>/<code>&lt;h3&gt;</code>.</li>
+<li>Respect reduced motion — use the provided <code>Reveal</code>/<code>RevealGroup</code> (already handle it) rather than raw
+framer-motion where possible.</li>
+</ol>
+<h2>Imports you will use (copy paths exactly, <code>@/</code> = <code>src/</code>)</h2>
+<h3>Data</h3>
+<pre><code class="language-ts">import { site, EST_YEAR, sectorsServed, trades, navSolutions } from &quot;@/data/site&quot;;
+import { solutions, getSolution } from &quot;@/data/solutions&quot;;
+import { projects, featuredProjects, getProject, projectServiceTags, projectSectors } from &quot;@/data/projects&quot;;
+import { testimonials, getTestimonial } from &quot;@/data/testimonials&quot;;
+import { sectors } from &quot;@/data/sectors&quot;;
+import { areas, getArea, coreAreas, extendedAreas } from &quot;@/data/areas&quot;;
+import type { Solution, Project, Area, Trade, Testimonial } from &quot;@/data/types&quot;;
+</code></pre>
+<p>Shapes: see <code>src/data/types.ts</code>. Key fields — Solution: <code>{slug, icon, name, navDescriptor, heroTitle, heroImage, intro[], scope[{title,body}], systems?[], benefit?{eyebrow,title,body}, relatedProjects[], testimonial?, faqs[{q,a}], seo{title,description}}</code>. Project: <code>{slug,title,town,sector,service[],hero, thumb,cardBlurb,duration?,scopeTitle,scope[],story[],testimonial?,gallery[],relatedSolutions[],featured?,seo}</code>.
+Area: <code>{slug,name,tier,intro[],relatedProjects[],seo}</code>.</p>
+<h3>Components (props are exact)</h3>
+<pre><code class="language-tsx">import { Seo } from &quot;@/components/Seo&quot;;
+// &lt;Seo title description path image? jsonLd? noindex? /&gt;  image/jsonLd optional
+import { PageHero } from &quot;@/components/PageHero&quot;;
+// &lt;PageHero eyebrow? title lead? image imageAlt crumbs? size=&quot;compact&quot;|&quot;full&quot; imagePosition?&gt;{CTAs}&lt;/PageHero&gt;
+import { Breadcrumb } from &quot;@/components/Breadcrumb&quot;;           // &lt;Breadcrumb crumbs={[{name,path?}]} /&gt;
+import { SectionHeading } from &quot;@/components/SectionHeading&quot;;   // &lt;SectionHeading eyebrow? title intro? align? as? /&gt;
+import { CTASection } from &quot;@/components/CTASection&quot;;           // &lt;CTASection eyebrow? title? body? primaryLabel? primaryTo? /&gt;
+import { TestimonialBlock } from &quot;@/components/TestimonialBlock&quot;; // &lt;TestimonialBlock id=&quot;jones&quot; /&gt;
+import { TestimonialCarousel } from &quot;@/components/TestimonialCarousel&quot;;
+import { Ticker } from &quot;@/components/Ticker&quot;;                   // &lt;Ticker items={string[]} tone=&quot;light&quot;|&quot;dark&quot; /&gt;
+import { ProjectCard, SolutionCard } from &quot;@/components/cards&quot;; // &lt;ProjectCard project /&gt; &lt;SolutionCard solution /&gt;
+import { Section } from &quot;@/components/primitives/Section&quot;;
+// &lt;Section tone=&quot;dark&quot;|&quot;light&quot;|&quot;raised&quot; cut=&quot;none&quot;|&quot;top&quot;|&quot;bottom&quot;|&quot;both&quot; grain plaster full innerClassName aria-labelledby&gt;...&lt;/Section&gt;
+import { Reveal, RevealGroup, RevealItem } from &quot;@/components/primitives/Reveal&quot;;
+import { Button } from &quot;@/components/primitives/Button&quot;;
+// &lt;Button to=&quot;/x&quot; | href=&quot;tel:...&quot; variant=&quot;primary&quot;|&quot;gold&quot;|&quot;ghost&quot;|&quot;pill&quot;|&quot;link&quot; size=&quot;sm&quot;|&quot;md&quot;|&quot;lg&quot; arrow newTab&gt;Label&lt;/Button&gt;
+import { GoldRule, Eyebrow, Counter } from &quot;@/components/primitives/bits&quot;;
+import { OptimizedImage } from &quot;@/components/primitives/OptimizedImage&quot;;
+// &lt;OptimizedImage src=&quot;&lt;manifestKey&gt;&quot; alt sizes? priority? treatment? position? className imgClassName /&gt;
+import { SolutionIcon } from &quot;@/components/primitives/SolutionIcon&quot;; // &lt;SolutionIcon icon={s.icon} size className=&quot;text-brass&quot; /&gt;
+import { cn } from &quot;@/lib/cn&quot;;
+</code></pre>
+<p><strong>Images:</strong> <code>src</code> is a manifest key = the master filename without extension (e.g. <code>&quot;demon-tweeks-hero&quot;</code>,
+<code>&quot;washroom-refurb-hero&quot;</code>, <code>s.heroImage</code>, <code>p.gallery[i]</code>, <code>p.thumb</code>). All keys already exist. Never use a
+raw <code>&lt;img&gt;</code>; always <code>&lt;OptimizedImage&gt;</code>. Always give real <code>alt</code>.</p>
+<h2>Design language (Tailwind classes — do not invent colours)</h2>
+<ul>
+<li>Tone backgrounds via <code>&lt;Section tone&gt;</code>. Dark = <code>bg-ink text-text-dark</code>; light = <code>bg-bone text-text-light</code>.</li>
+<li>Colours: <code>text-brass</code> / <code>bg-brass</code> (aged brass accent), <code>text-brass</code> on dark for small text is fine;
+on the LIGHT (<code>bone</code>) background, brass passes for large text only — for small brass text on light use
+sparingly. <code>text-graphite</code> = muted on light. <code>text-text-dark/70</code> = muted on dark. Gold shine bg = <code>bg-gold-shine</code>.</li>
+<li>Type: headings auto-use Cormorant (<code>font-display</code>, weight 300). Body <code>font-sans</code> (Outfit). Labels/stats
+<code>font-mono</code> (DM Mono). Display sizes: <code>text-display-xl/lg/md/sm</code>. Eyebrows: class <code>eyebrow</code> (mono, brass, tracked).</li>
+<li>Spacing: sections use <code>py-section</code>. Container: wrap inner content in <code>&lt;Section&gt;</code> (adds <code>.container-edge</code>)
+OR use <code>container-edge</code> class directly. Generous whitespace is the aesthetic — do not crowd.</li>
+<li>Signature details: gold rules (<code>&lt;GoldRule/&gt;</code>), 3° diagonal cuts (<code>&lt;Section cut=&quot;top&quot;&gt;</code>), grain is on by
+default, photo grade is automatic on <code>OptimizedImage</code>. Cards lift on hover with a gold border.</li>
+<li>Motion: wrap section content in <code>&lt;Reveal&gt;</code>; groups in <code>&lt;RevealGroup&gt;</code> with <code>&lt;RevealItem&gt;</code> children.
+Transitions 150–250ms. Everything must degrade under reduced motion (the primitives handle it).</li>
+<li>Buttons: primary CTA on light/photo = <code>variant=&quot;primary&quot;</code>; strongest on dark = <code>variant=&quot;gold&quot;</code>;
+outline on dark = <code>variant=&quot;ghost&quot;</code>; nav pill = <code>variant=&quot;pill&quot;</code>; text = <code>variant=&quot;link&quot;</code>. Add <code>arrow</code>.</li>
+</ul>
+<h2>SEO per page (required)</h2>
+<p>Every page returns <code>&lt;Seo title description path image? jsonLd? /&gt;</code> as the first element. Use the page's
+<code>seo.title</code>/<code>seo.description</code> from data where available; <code>path</code> is the route; <code>image</code> a manifest key
+(usually the hero). For solution/project/area detail pages also pass breadcrumb JSON-LD:</p>
+<pre><code class="language-ts">import { breadcrumbJsonLd, serviceJsonLd } from &quot;@/lib/seo&quot;;
+</code></pre>
+<p>Solution pages: <code>jsonLd={[breadcrumbJsonLd([...]), serviceJsonLd(s.name, s.seo.description, &quot;/&quot;+s.slug)]}</code>.</p>
+<h2>Page skeleton to follow</h2>
+<pre><code class="language-tsx">export function X() {
+  return (
+    &lt;&gt;
+      &lt;Seo .../&gt;
+      &lt;PageHero .../&gt;            {/* the single &lt;h1&gt; */}
+      &lt;Section tone=&quot;light&quot;&gt;...&lt;/Section&gt;
+      &lt;Section tone=&quot;dark&quot;&gt;...&lt;/Section&gt;
+      {/* testimonial where one exists */}
+      &lt;CTASection /&gt;            {/* almost every page ends with this */}
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>Keep the existing <code>export function &lt;Name&gt;(...)</code> signature of the stub you are replacing.</p>

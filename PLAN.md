@@ -31,16 +31,19 @@ no auth, no database — everything front-of-house.
 - **Stack:** Vite + React 18 + TypeScript (strict) + Tailwind (design tokens) +
   Framer Motion + React Hook Form + Zod + react-helmet-async. Route-level code
   splitting via `React.lazy`.
-- **Prerendering:** `npm run build` runs `scripts/prerender.mjs` — it serves the
-  built SPA, visits every route in `scripts/routes.mjs` with headless Chromium,
-  and writes fully-rendered static HTML (title, meta, canonical, OG, JSON-LD, and
-  visible content) to `dist/<route>/index.html`. Critical CSS is inlined; a
-  `sitemap.xml` is emitted. So every route serves real HTML for crawlers/no-JS.
-  - We render (not hydrate) on the client: a browser-captured prerender of a
-    Framer-Motion tree can't be hydrated cleanly, so `main.tsx` uses `createRoot`.
-    The prerendered HTML still gives crawlers/no-JS real content; motion
-    primitives render "settled" (visible) under `navigator.webdriver`/reduced
-    motion so nothing is ever captured at `opacity:0`.
+- **Prerendering (browser-free SSG):** `npm run build` = `tsc` → `vite build`
+  (client) → `vite build --ssr` (server bundle) → `scripts/prerender-ssg.mjs`,
+  which renders every route in `scripts/routes.mjs` with `react-dom/server`
+  `renderToString` + `StaticRouter`, injecting the HTML, react-helmet-async head
+  tags and inlined critical CSS into the template → `dist/<route>/index.html`
+  (+ `sitemap.xml`). **No headless browser** → runs in plain Node on Vercel/CI.
+  - Motion renders "settled" (visible) during SSR (`typeof window==='undefined'`)
+    and for reduced motion, so static HTML is never captured at `opacity:0`. The
+    client renders fresh with `createRoot` (no hydration — a Framer-Motion tree
+    can't be cleanly hydrated; the prerendered HTML is for crawlers/no-JS).
+  - **Deploy:** `vercel.json` (buildCommand `npm run build`, outputDirectory
+    `dist`, legacy 301 redirects, immutable asset cache headers). Push + import
+    in Vercel — no extra config. `public/_redirects` kept for Netlify.
 - **Content = data files.** `src/data/*` is the single source of truth; pages are
   presentational. See `docs/BUILD-CONTRACT.md` for the component/design system.
 

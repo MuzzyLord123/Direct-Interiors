@@ -1,0 +1,326 @@
+<h1>Direct Interiors North West — Premium Refresh Plan</h1>
+<p><strong>Project:</strong> Modernise (not redesign) directinteriorsnw.com.
+<strong>Approach:</strong> The repo was empty, so the site is rebuilt as an Eleventy static site that faithfully
+reproduces the live Duda site's structure, palette, photography and copy, with the brief's
+improvements applied. All photography and genuine copy were crawled from the live site
+(30 pages fetched 2026-07-08).</p>
+<hr>
+<h2>TODO(client) — decisions needed before launch</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Default used in build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Established date</strong>: About says &quot;established in 2000&quot;, Home hero says &quot;Est 2002&quot;. Which is right?</td>
+<td><code>2002</code> (single constant in <code>src/_data/site.js</code>)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Testimonial attribution</strong>: the &quot;Dividing offices up…&quot; quote is credited to <em>Mr B Jones, Chester Business Park</em> on 4 pages but <em>AURA Leisure and Libraries</em> on Glass Partitions. Who said it?</td>
+<td>Mr B Jones (majority usage). Single source: <code>src/_data/testimonials.json</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Address form</strong>: contact blocks said &quot;Garden City, Flintshire&quot;, footer said &quot;Garden City, Deeside&quot;.</td>
+<td>Standardised: <strong>96 Welsh Road, Garden City, Deeside, Flintshire CH5 2HX</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Accreditations</strong> (CHAS / SafeContractor / Constructionline?) for About trust strip</td>
+<td>Only CSCS (already claimed on Sub Services) is shown</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Opening hours</strong> for footer + Contact page</td>
+<td>Omitted (marked in code with <code>TODO(client)</code>)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Company registration number</strong> for footer</td>
+<td>Omitted (marked in code with <code>TODO(client)</code>)</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Privacy policy legal review</strong>: notice is dated 18 Jan 2021 and lists suppliers (Minster, SIG, Galaxy, CCF). Substance not rewritten — only the wrong email, broken links and stray &quot;[ ]&quot; tick boxes fixed.</td>
+<td>Text preserved at <code>/privacy-policy</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Ceilings Direct product links</strong>: their store uses hash-routed category URLs that can't be mapped to product names from outside.</td>
+<td>All six Shop cards link to <code>https://www.ceilings-direct.com/store</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Form endpoint</strong>: Duda's internal form handler can't be reused outside Duda.</td>
+<td>Configurable constant in <code>src/_data/site.js</code> (<code>formEndpoint</code>) + progressive-enhancement JS</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>&quot;Sub Services&quot; rename</strong>: proposed on-page H1 &quot;Supporting Trades — All In-House&quot; (URL &amp; nav label unchanged)</td>
+<td>Applied on page only</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Geo coordinates</strong> for LocalBusiness schema need verifying</td>
+<td>Omitted from JSON-LD until confirmed</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Brand tokens (sampled from live site — unchanged)</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accent blue</td>
+<td><code>#3bb5e6</code></td>
+<td><code>.our-btns a</code> background, selected-nav colour, CTA band background (<code>rgba(59,181,230,1)</code>)</td>
+</tr>
+<tr>
+<td>Charcoal</td>
+<td><code>#595959</code></td>
+<td>Logo background (pixel-sampled from <code>logo-cd2.png</code>)</td>
+</tr>
+<tr>
+<td>Logo red</td>
+<td><code>#ff0000</code></td>
+<td>Logo lettering (&quot;Direct Shopfitting &amp; Interiors&quot;) — used only in the logo, not as a UI colour</td>
+</tr>
+<tr>
+<td>Body text</td>
+<td><code>#333333</code> / <code>#666666</code></td>
+<td>Live stylesheet</td>
+</tr>
+<tr>
+<td>Light section bg</td>
+<td><code>#f7f7f7</code> / <code>#faf9f9</code></td>
+<td>Live stylesheet</td>
+</tr>
+<tr>
+<td>White</td>
+<td><code>#ffffff</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Typeface</td>
+<td><strong>Source Sans Pro</strong> 400/600/700 (self-hosted)</td>
+<td>Live stylesheet (<code>font-family:'Source Sans Pro'</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Contrast adjustments (WCAG AA), documented per §1 hard rules (ratios computed, not eyeballed):</strong></p>
+<ul>
+<li>Brand blue <code>#3bb5e6</code> vs white = <strong>2.35:1</strong> → fails AA even for large text. It is therefore kept
+only where it never carries text against white: decorative accents, borders, quote marks, and
+as large display colour on dark charcoal (<code>#3bb5e6</code> on <code>#333</code> = 5.38:1 ✓).</li>
+<li>New derived token <code>--color-accent-strong: #1978a5</code> — the same hue darkened until white text
+passes: white on <code>#1978a5</code> = <strong>4.92:1</strong> ✓, and <code>#1978a5</code> link text on white = 4.92:1 ✓ /
+on <code>#f7f7f7</code> = 4.59:1 ✓. Used for: primary buttons, CTA band background, text links.
+(Before: <code>#3bb5e6</code> / After: <code>#1978a5</code> — this is the only adjusted colour on the site.)</li>
+<li>Charcoal <code>#595959</code> with white text = 7.00:1 ✓ (footer). Body <code>#333</code> = 12.63:1 ✓,
+muted <code>#666</code> = 5.74:1 ✓. Hero/photo text always sits on a dark scrim.</li>
+<li>Second derived token <code>--color-accent-on-dark: #9cdcf4</code> — brand blue lightened for
+small text on the charcoal footer/brand-statement (<code>#3bb5e6</code> on <code>#595959</code> = 2.98:1
+✗ → <code>#9cdcf4</code> = 4.66:1 ✓). Used only on dark surfaces.</li>
+</ul>
+<hr>
+<h2>Sitemap &amp; redirects</h2>
+<p><strong>Kept URLs (18 pages):</strong> <code>/</code>, <code>/interior-fit-outs-and-refurbishments</code>, <code>/suspended-ceilings</code>,
+<code>/partition-walls-drylining</code>, <code>/glass-partitions</code>, <code>/hygienic-wall-cladding</code>,
+<code>/washroom-refurbishments</code>, <code>/bespoke-designs</code>, <code>/sub-services</code>, <code>/about-us</code>, <code>/our-work</code>,
+7 case-study slugs, <code>/contact-us</code>, <code>/terms-and-conditions</code>, <code>/cookies-policy</code>.</p>
+<p><strong>New pages:</strong> <code>/solutions</code> (hub — gives the nav parent a real destination), <code>/privacy-policy</code>
+(canonical privacy URL), custom 404.</p>
+<p><strong>301 redirects</strong> (committed in <code>_redirects</code> + documented in <code>redirects.md</code>; every legacy URL also
+gets a static meta-refresh + canonical stub as fallback for hosts without redirect support):</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/how-can-we-help</code></td>
+<td><code>/contact-us?enquiry=general</code></td>
+</tr>
+<tr>
+<td><code>/no-obligation-consultation</code></td>
+<td><code>/contact-us?enquiry=consultation</code></td>
+</tr>
+<tr>
+<td><code>/get-a-quote</code></td>
+<td><code>/contact-us?enquiry=quote</code></td>
+</tr>
+<tr>
+<td><code>/tenders</code></td>
+<td><code>/contact-us?enquiry=tender</code></td>
+</tr>
+<tr>
+<td><code>/gdpr</code></td>
+<td><code>/privacy-policy</code></td>
+</tr>
+<tr>
+<td><code>/gdpr---level-1</code></td>
+<td><code>/privacy-policy</code> (was already a 404 on the live site)</td>
+</tr>
+<tr>
+<td><code>/gdpr---level-2</code></td>
+<td><code>/privacy-policy</code></td>
+</tr>
+<tr>
+<td><code>/example-case-study-for-copying</code></td>
+<td><code>/our-work</code> (leftover Duda template page, live &amp; indexed)</td>
+</tr>
+<tr>
+<td><code>/servicesbbeea1bd</code></td>
+<td><code>/solutions</code> (leftover lorem-ipsum template page, live &amp; indexed)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>The two junk template pages above were discovered during the crawl — they are in the live
+sitemap.xml and full of lorem ipsum, so they redirect rather than 404.</p>
+</blockquote>
+<hr>
+<h2>Page-by-page changes</h2>
+<h3>Global (every page) — Priority: CRITICAL/HIGH</h3>
+<ul>
+<li>Purge all Duda placeholders: &quot;Slide title&quot;, &quot;Molorpe riusto…&quot;, &quot;Write your caption here&quot;,
+&quot;Button&quot;, &quot;City skyline / Photo By: John Doe&quot; etc. CI grep (<code>scripts/check-placeholders.sh</code>)
+fails the build if any return.</li>
+<li>Header: right-sized logos with <code>srcset</code> (was 1920px assets in 120px slots); phone number now
+<code>tel:+441244810222</code> (was wrapped in <code>mailto:</code>!); separate email link; Ceilings Direct reduced
+to one labelled utility link; &quot;Solutions&quot; nav links to real <code>/solutions</code> hub; sticky header;
+accessible mobile menu (button + <code>aria-expanded</code> + Escape + focus management); &quot;Get a free
+quote&quot; button in header.</li>
+<li>CTA band: rendered once per page (was twice), as links-styled-as-cards in
+<code>&lt;nav aria-label=&quot;Enquiries&quot;&gt;</code>, 3 actions max, all pointing at consolidated <code>/contact-us</code>
+destinations. Fixed the case-study bug where &quot;No obligation consultation&quot; linked to <code>/our-work</code>.</li>
+<li>Testimonials: <code>&lt;blockquote&gt;</code> + <code>&lt;cite&gt;</code>, proper quotes, single data file, varied per page.</li>
+<li>Footer: dynamic year (was hard-coded 2021), standardised address, &quot;Areas we cover&quot; line,
+4-column layout, canonical privacy link, &quot;Share by:&quot; residue and BOM/zero-width chars removed.</li>
+<li>Forms: one shared component; visible labels; autocomplete; inline validation via
+<code>aria-describedby</code>; <code>role=&quot;status&quot;</code> announcements; consent checkbox links the privacy policy.</li>
+<li>SEO: unique titles + meta descriptions (service + geography), one <code>&lt;h1&gt;</code> per page, canonicals,
+OG/Twitter images, LocalBusiness + BreadcrumbList JSON-LD, XML sitemap, robots.txt.</li>
+<li>A11y: alt text everywhere, skip link, landmarks, <code>:focus-visible</code>, <code>lang=&quot;en-GB&quot;</code>,
+reduced-motion gating, 44px targets.</li>
+<li>Performance: AVIF/WebP + JPEG <code>srcset</code> via sharp, explicit dimensions, lazy loading below fold,
+<code>fetchpriority=&quot;high&quot;</code> hero preload, self-hosted font with <code>font-display: swap</code>, JS &lt; 15KB.</li>
+</ul>
+<h3><code>/</code> Home — CRITICAL</h3>
+<p>Narrative order preserved. 6-slide placeholder carousel → single static hero (slider01 photo,
+real headline + Est-2002 line, &quot;Get a free quote&quot; + &quot;View our work&quot;). Services grid: 7 consistent
+whole-card links (was: placeholder &quot;Button&quot; labels, one card without a button). Sector tiles:
+real images restored (all 8 exist on the CDN despite empty <code>src</code> on the live page), dead buttons
+removed, rendered as a static credibility strip. Shop cards: all six linked to Ceilings Direct
+store (<code>rel=&quot;noopener&quot;</code>, new tab) + context sentence. De-duplicated the twice-rendered contact
+blocks; pull-quote restyled as a brand statement (not <code>&lt;h2&gt;</code>). &quot;Trusted by&quot; strip (Welsh
+Government, Demon Tweeks, AURA, Bell Meadow) added as low-key text.</p>
+<h3>Solutions template (7 pages) — CRITICAL/HIGH</h3>
+<p>Placeholder hero slider → static hero with page H1 + breadcrumb (BreadcrumbList schema).
+Body rhythm: intro → two-column checklist → supporting copy → photo → testimonial → CTA band →
+Related projects (2–3 case-study cards) → Other solutions links. &quot;T -&quot;/&quot;E-&quot; contact fragments →
+shared contact strip. Duplicate CTA bands removed.</p>
+<ul>
+<li>Interior Fit-Outs: related = Demon Tweeks, Doc Fictoria, Bell Meadow.</li>
+<li>Suspended Ceilings: services list → checklist; related = Butchers Dyserth, Demon Tweeks.</li>
+<li>Partition Walls: British Gypsum / Siniat / Knauf as text-only &quot;systems we install&quot; strip;
+related = Westrock, Doc Fictoria.</li>
+<li>Glass Partitions: fixed &quot;includeintegral blinds&quot;, bullet spacing; related = Westrock,
+Matthew Arnold, Bell Meadow; testimonial attribution resolved (→ Matthew Arnold receptionist
+quote used here to avoid repeating the Jones quote).</li>
+<li>Hygienic Wall Cladding: Advantages + Suitable Locations as checklists; Golden Fish &amp; Chips
+testimonial kept; related = Butchers Dyserth, Padeswood &amp; Buckley.</li>
+<li>Washrooms: DDA + &quot;one stop shop&quot; kept (quoting normalised); related = Padeswood &amp; Buckley.</li>
+<li>Bespoke Designs: installations list → checklist; related = Bell Meadow, Demon Tweeks.</li>
+</ul>
+<h3><code>/solutions</code> hub — MEDIUM (new)</h3>
+<p>Card grid of all seven solutions (reuses Home services grid component).</p>
+<h3><code>/sub-services</code> — MEDIUM</h3>
+<p>List reordered above the referencing copy (&quot;All the above listed…&quot; rewritten). Trades as
+two-column checklist. On-page H1 &quot;Supporting Trades — All In-House&quot; (URL/nav unchanged,
+TODO(client) #10). Zero-width characters stripped.</p>
+<h3><code>/about-us</code> — CRITICAL (date) / MEDIUM</h3>
+<p>&quot;Formally known asCeilings Direct&quot; → &quot;Formerly known as Ceilings Direct&quot;; &quot;choose theContact Us
+option&quot; → contact button; &quot;justly proud … at present date&quot; → &quot;We're proud of the reputation we've
+built over two decades.&quot;; Est-date constant (TODO #1); stat strip (Years / Projects / Trades
+in-house); &quot;View our work&quot; button.</p>
+<h3><code>/our-work</code> — MEDIUM</h3>
+<p>Raw slug text removed from cards; whole-card links with focus states; equal-height 3/2/1 grid;
+service tags; short intro paragraph; filter chips (progressive enhancement, Low priority).</p>
+<h3>Case-study template (7 pages) — CRITICAL</h3>
+<p>Placeholder hero + John-Doe gallery purged; gallery rebuilt from the real <code>*-gallery01–04.jpg</code>
+photos (discovered on the CDN) in an accessible keyboard-operable lightbox. Wrong
+consultation→/our-work link fixed. Five-link action row → breadcrumb + single &quot;Discuss a similar
+project&quot; CTA; full band moved to bottom. Project meta panel (Location / Sector / Services /
+Duration only where stated — e.g. Padeswood &quot;4 weeks&quot;). Prev/next + related solutions.
+Copy fixes per brief §6.3 (Butchers, Matthew Arnold, AURA quote).</p>
+<h3>Legal — CRITICAL</h3>
+<ul>
+<li>T&amp;Cs: &quot;Celings Direct Ltd's&quot; / &quot;Ceilings Direct Ltd&quot; → &quot;Direct Interiors North West Limited&quot;.</li>
+<li><code>/privacy-policy</code> (new canonical): full Level-2 notice text preserved; email corrected to
+info@directinteriorsnw.com; link-less &quot;clicking this link&quot; sentence now links the contact form;
+literal &quot;[ ]&quot; tick boxes removed; malformed Galaxy Insulation link fixed; legal review flagged
+(TODO #7).</li>
+<li>Cookies: template fixes only. Minimal consent banner blocks GA until accepted, with
+equal-prominence decline.</li>
+</ul>
+<hr>
+<h2>Priorities (work order)</h2>
+<ol>
+<li><strong>Critical</strong> — placeholders purge, testimonial attribution, wrong CTA links, enquiry-page
+consolidation + 301s, T&amp;Cs company name, privacy email/URL, Est-date constant, empty img srcs.</li>
+<li><strong>High</strong> — titles/descriptions, heading hierarchy, alt text, form a11y, header fixes,
+responsive images + hero de-carousel, CTA band de-dup, footer year/address, contrast scrims,
+shop links.</li>
+<li><strong>Medium</strong> — related links, breadcrumbs + schema, LocalBusiness + OG, /solutions hub, Our Work
+cards, meta panels + prev/next, copy corrections, sticky header, stat strip, map.</li>
+<li><strong>Low</strong> — filter chips, entry animations (reduced-motion-gated), testimonial variety, footer
+extras.</li>
+</ol>
+<h2>Acceptance verification — results (2026-07-08)</h2>
+<ul>
+<li>[x] <code>scripts/check-placeholders.sh</code> passes on the full built output
+(<code>check-placeholders: OK — no template placeholder strings in _site</code>).</li>
+<li>[x] <code>scripts/check-links.mjs</code>: <strong>33 pages, zero broken/<code>#</code>/empty-href links; every
+<code>&lt;img&gt;</code> has src, width/height and alt; exactly one <code>&lt;h1&gt;</code> per page.</strong></li>
+<li>[x] Legacy URLs: <code>_redirects</code> (301, forced) + per-URL <code>noindex</code> meta-refresh stub
+fallbacks with canonicals; custom 404 page built. No orphaned URLs.</li>
+<li>[x] Keyboard/interaction walkthrough (<code>scripts/walkthrough.mjs</code>): <strong>26/26 PASS</strong> —
+skip link, dropdown disclosure (Enter/Escape), solution → related project →
+lightbox (arrows/Escape), consultation CTA regression check, <code>?enquiry=</code>
+pre-selection, inline validation + <code>role=&quot;status&quot;</code> announcement, work filters,
+mobile menu (aria-expanded, Escape returns focus), no horizontal scroll at
+320px/375px.</li>
+<li>[x] Lighthouse (mobile emulation, headless Chromium 149):
+| Page | Perf | A11y | Best-Practices | SEO |
+|------|------|------|----------------|-----|
+| Home | 98 | 100 | 100 | 100 |
+| Suspended Ceilings | 99 | 100 | 100 | 100 |
+| Demon Tweeks | 99 | 100 | 100 | 100 |
+| Contact | 99 | 100 | 100 | 100 |</li>
+<li>[x] Before/after screenshots at 375px &amp; 1440px for Home, Suspended Ceilings,
+Demon Tweeks and Contact committed to <code>/screenshots</code> (<code>before-*</code> = live Duda
+site, <code>after-*</code> = rebuild).</li>
+<li>Assets: CSS 23KB + JS 6.5KB minified (pre-gzip) — well inside the 75KB JS budget.</li>
+</ul>
+<h3>Same-brand note</h3>
+<p>The live site's header is a dark charcoal band with the combined logo; the rebuild
+keeps exactly that (the logo PNG's own <code>#595959</code> background blends into the header),
+with the same white nav, brand-blue accents and photography-led heroes. The returning-
+visitor reaction should be &quot;sharper&quot;, not &quot;new website&quot;.</p>
