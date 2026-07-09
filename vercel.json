@@ -5,7 +5,12 @@
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/checkout.js": { "includeFiles": "api/products.json" }
+  },
   "redirects": [
+    { "source": "/store", "destination": "/shop", "permanent": true },
+    { "source": "/store/(.*)", "destination": "/shop", "permanent": true },
     { "source": "/get-a-quote", "destination": "/contact?enquiry=quote", "permanent": true },
     { "source": "/no-obligation-consultation", "destination": "/contact?enquiry=consultation", "permanent": true },
     { "source": "/tenders", "destination": "/contact?enquiry=tender", "permanent": true },

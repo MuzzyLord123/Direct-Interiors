@@ -1,10 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Phone } from "lucide-react";
+import { Phone, ShoppingBag } from "lucide-react";
 import { navPrimary, navSolutions, site } from "@/data/site";
 import { Button } from "@/components/primitives/Button";
+import { useCart } from "@/shop/CartContext";
 import { cn } from "@/lib/cn";
+
+function CartIndicator({ className }: { className?: string }) {
+  const { count } = useCart();
+  return (
+    <Link
+      to="/cart"
+      aria-label={`Basket${count ? `, ${count} item${count === 1 ? "" : "s"}` : " (empty)"}`}
+      className={cn("relative inline-flex h-10 w-10 items-center justify-center text-text-dark/85 transition-colors hover:text-brass", className)}
+    >
+      <ShoppingBag className="h-5 w-5" aria-hidden="true" />
+      {count > 0 && (
+        <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brass px-1 font-mono text-[0.6rem] font-bold text-ink">
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 function Wordmark({ onDark = true }: { onDark?: boolean }) {
   return (
@@ -168,16 +187,19 @@ export function Nav() {
             <Phone className="h-3.5 w-3.5 text-brass" aria-hidden="true" />
             {site.phoneDisplay}
           </a>
+          <CartIndicator />
           <Button to="/contact" variant="pill" size="sm">
             Get a Free Quote
           </Button>
         </div>
 
-        {/* Mobile toggle */}
+        {/* Mobile: cart + toggle */}
+        <div className="flex items-center gap-1 lg:hidden">
+          <CartIndicator />
         <button
           ref={toggleRef}
           type="button"
-          className="relative z-[130] flex h-11 w-11 items-center justify-center lg:hidden"
+          className="relative z-[130] flex h-11 w-11 items-center justify-center"
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -201,6 +223,7 @@ export function Nav() {
             />
           </span>
         </button>
+        </div>
       </div>
 
       <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} pathname={pathname} triggerRef={toggleRef} />

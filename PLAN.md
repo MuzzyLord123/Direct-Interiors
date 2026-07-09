@@ -24,6 +24,10 @@ no auth, no database — everything front-of-house.
 | **Accreditations** (CHAS / SafeContractor / Constructionline) + team photos | Why Direct page | honest "coming soon" placeholder, no fake logos |
 | **Legal review** — privacy/terms/cookies are standard templates | `src/pages/legal/*` | dated "July 2026", flagged |
 | **Sector-tile imagery** licensing/ownership | `image-masters/*-sector.jpg` | reused from the client's existing site |
+| **Stripe key** to make checkout live | Vercel env `STRIPE_SECRET_KEY` | unset → basket shows "call us" fallback |
+| **Shop VAT treatment** (inc vs ex) | `site.shop.pricesIncludeVat` | prices treated as VAT-inclusive (as displayed on Ceilings Direct) |
+| **Delivery rates** | `api/checkout.js` | free Deeside collection + flat £15 UK delivery (placeholder) |
+| **Order fulfilment** (Stripe webhook / emails) | — | not built; Stripe sends its receipt only |
 
 ---
 

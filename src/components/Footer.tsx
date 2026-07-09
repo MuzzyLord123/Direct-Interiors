@@ -6,6 +6,7 @@ import { GoldRule } from "@/components/primitives/bits";
 const company = [
   { label: "Why Direct", href: "/why-direct" },
   { label: "Projects", href: "/projects" },
+  { label: "Shop Materials", href: "/shop" },
   { label: "Process & Pricing", href: "/process" },
   { label: "Areas We Cover", href: "/areas" },
   { label: "About Ceilings Direct", href: site.sister.url },

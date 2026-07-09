@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Cursor } from "@/components/Cursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { IntroOverlay } from "@/components/IntroOverlay";
+import { CartProvider } from "@/shop/CartContext";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -16,7 +17,7 @@ function ScrollToTop() {
 
 export function RootLayout() {
   return (
-    <>
+    <CartProvider>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[400] focus:rounded-sm focus:bg-brass focus:px-4 focus:py-2 focus:font-sans focus:text-sm focus:text-ink"
@@ -32,6 +33,6 @@ export function RootLayout() {
         <Outlet />
       </main>
       <Footer />
-    </>
+    </CartProvider>
   );
 }

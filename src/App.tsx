@@ -20,6 +20,10 @@ import { Contact } from "@/pages/Contact";
 import { Privacy } from "@/pages/legal/Privacy";
 import { Terms } from "@/pages/legal/Terms";
 import { Cookies } from "@/pages/legal/Cookies";
+import { Shop } from "@/pages/shop/Shop";
+import { ProductDetail } from "@/pages/shop/ProductDetail";
+import { Cart } from "@/pages/shop/Cart";
+import { CheckoutSuccess, CheckoutCancelled } from "@/pages/shop/CheckoutResult";
 import { NotFound } from "@/pages/NotFound";
 
 const R = ({ to }: { to: string }) => <Navigate to={to} replace />;
@@ -51,6 +55,13 @@ export default function App() {
         <Route path="/process" element={<Process />} />
         <Route path="/areas" element={<Areas />} />
         <Route path="/areas/:slug" element={<AreaDetail />} />
+
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/success" element={<CheckoutSuccess />} />
+        <Route path="/shop/cancelled" element={<CheckoutCancelled />} />
+        <Route path="/shop/:slug" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/store" element={<R to="/shop" />} />
 
         <Route path="/contact" element={<Contact />} />
         <Route path="/get-a-quote" element={<R to="/contact?enquiry=quote" />} />

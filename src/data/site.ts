@@ -52,6 +52,25 @@ export const site = {
     blurb: "Our sister company supplies trade ceiling & partitioning materials.",
   },
 
+  // On-site shop (products sourced from the Ceilings Direct catalogue).
+  shop: {
+    currency: "gbp",
+    // TODO(client): confirm VAT treatment. Prices are stored exactly as shown on
+    // ceilings-direct.com. If those are VAT-INCLUSIVE (default), Stripe charges
+    // them as-is and reports the 20% VAT component. If they are EX-VAT, set this
+    // to false and the checkout function adds 20% VAT on top.
+    pricesIncludeVat: true,
+    vatRate: 0.2,
+    // TODO(client): confirm real delivery pricing. Collection is free; UK
+    // delivery is a flat placeholder until confirmed.
+    delivery: {
+      collection: true,
+      ukDeliveryPence: 1500,
+      freeDeliveryThresholdPence: 25000,
+    },
+    checkoutEndpoint: "/api/checkout",
+  },
+
   // TODO(client): replace with the live form handler (Web3Forms / Formspree /
   // serverless endpoint). Until set, the form validates and shows a graceful
   // "call us" fallback rather than posting to a dead URL.
@@ -108,5 +127,6 @@ export const navPrimary: NavItem[] = [
   { label: "Why Direct", href: "/why-direct" },
   { label: "Process", href: "/process" },
   { label: "Areas", href: "/areas" },
+  { label: "Shop", href: "/shop" },
   { label: "Contact", href: "/contact" },
 ];

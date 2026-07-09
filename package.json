@@ -6,11 +6,12 @@
   "description": "Direct Interiors North West — premium marketing site (React + Vite).",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server --emptyOutDir && node scripts/prerender-ssg.mjs",
+    "build": "node scripts/gen-api-catalog.mjs && tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server --emptyOutDir && node scripts/prerender-ssg.mjs",
     "typecheck": "tsc --noEmit",
     "build:novite": "vite build",
     "preview": "vite preview --port 4173",
     "images": "node scripts/generate-images.mjs",
+    "scrape-shop": "node scripts/scrape-shop.mjs",
     "prerender": "node scripts/prerender-ssg.mjs",
     "check:placeholders": "node scripts/check-placeholders.mjs",
     "check:links": "node scripts/check-links.mjs",
@@ -27,6 +28,7 @@
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.53.2",
     "react-router-dom": "^6.28.0",
+    "stripe": "^17.7.0",
     "tailwind-merge": "^2.5.4",
     "zod": "^3.23.8"
   },

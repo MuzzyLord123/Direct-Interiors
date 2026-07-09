@@ -67,6 +67,32 @@ Motion components render "settled" (visible, no entrance animation) during SSR (
 client renders fresh with `createRoot` (we don't hydrate — a browser-rendered Framer-Motion tree
 can't be hydrated cleanly; the prerendered HTML is for crawlers/no-JS).
 
+## Shop (Stripe checkout)
+
+An on-site shop lives at `/shop` (catalogue + filters), `/shop/:slug` (product), `/cart`, and
+`/shop/success` · `/shop/cancelled`. Products are the **real Ceilings Direct catalogue** (54 items —
+prices in GBP, SKUs, descriptions, images) in `src/data/shop.ts`, scraped from their Ecwid store.
+Refresh it any time with `npm run scrape-shop` (then `npm run images && npm run build`).
+
+Checkout uses **Stripe Checkout** via a Vercel serverless function, `api/checkout.js`. It validates
+prices **server-side** from `api/products.json` (generated from `shop.ts` at build time — client
+amounts are ignored) and creates a hosted Checkout Session. Stripe Checkout gives you **card, Apple
+Pay, Google Pay, Klarna and Link** automatically once you enable them in the Stripe dashboard.
+
+**To make checkout live** (`TODO(client)`):
+1. Create a Stripe account and, in Vercel → Settings → Environment Variables, set
+   **`STRIPE_SECRET_KEY`** (`sk_test_…` to trial, `sk_live_…` for real payments). Redeploy.
+   Until it's set, the basket shows a "call us to order" fallback instead of a dead checkout.
+2. In the Stripe dashboard, enable the payment methods you want (card, wallets, Klarna, Link).
+3. **VAT** — prices are stored exactly as shown on ceilings-direct.com and treated as the final,
+   VAT-inclusive charge (`site.shop.pricesIncludeVat`). For proper VAT on invoices, enable **Stripe
+   Tax**. If your prices are actually ex-VAT, set `pricesIncludeVat: false` and add VAT in `api/checkout.js`.
+4. **Delivery** — `api/checkout.js` offers free Deeside collection + a flat £15 UK delivery
+   (placeholder). Confirm your real rates.
+5. Consider a Stripe **webhook** (`checkout.session.completed`) for order fulfilment/emails.
+
+Cart state is client-side (localStorage), SSR-safe (server renders an empty basket).
+
 ## Deploying to Vercel
 
 `vercel.json` sets `buildCommand: npm run build`, `outputDirectory: dist`, the legacy-URL redirects,
